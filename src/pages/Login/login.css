@@ -1,0 +1,13 @@
+.ModalPadre{
+    height:auto;
+    width:auto;
+    text-align: center;
+    background-color:blue;
+}
+
+.ModalHijo{
+        height:50px;
+        width:400px;
+        margin: 0px auto;
+        background-color:red;
+}
