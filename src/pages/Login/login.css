@@ -1,13 +1,19 @@
-.ModalPadre{
-    height:auto;
-    width:auto;
-    text-align: center;
-    background-color:blue;
+body{
+    height: 100%;
+    background-color: #000;
+    margin: 0;
+  }
+.Contenedor{
+    background-color: brown;
+    display: grid;
+    grid-template-columns: 2fr 1.3fr;
+    background: url(../../assets/images/AdobeStock_303980052_Preview.jpeg) left;
+    height: 100vh;
+    background-size: cover;
 }
 
-.ModalHijo{
-        height:50px;
-        width:400px;
-        margin: 0px auto;
-        background-color:red;
-}
+  .ModalHijo{
+    background-color: #000080;
+    
+  }
+  
