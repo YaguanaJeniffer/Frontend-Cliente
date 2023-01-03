@@ -5,6 +5,7 @@ import Label from "./components/Label/Label";
 import InputT from "./components/Input/Input";
 import InputPass from "./components/InputPass/InputPass";
 import ButtonI from "./components/Button/Button";
+import Footer from "./components/Footer/Footer";
 
 
 const Login = () => {
@@ -22,8 +23,8 @@ const Login = () => {
           <InputT> </InputT>
           <InputPass></InputPass>
           <ButtonI></ButtonI>
-          <></>
         </div>
+        <Footer></Footer>
       </div>
 
     </div>

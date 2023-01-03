@@ -21,8 +21,8 @@ const ButtonI = () => {
   return (
     <>
       <div direction="vertical" className='Button1'>
-          <Button  type="primary" shape="round" size='large'>
-            Ingresar
+          <Button className='Button2' type="primary" shape="round" size="large" style={{ backgroundColor: '#1677ff', width: '250px' }}>
+            INGRESAR
           </Button>
       </div>
     </>

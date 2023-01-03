@@ -15,7 +15,7 @@ export default InputPass; */
 
 import React from 'react';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import { Button, Input, Space } from 'antd';
+import { Input, Space } from 'antd';
 import '../InputPass/InputPass.css';
 import { LockOutlined } from '@ant-design/icons';
 
