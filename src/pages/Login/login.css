@@ -19,5 +19,28 @@ body{
 
   .ant-btn {
     font-weight: bold;
+    margin-top: 35px;
+    }
+
+    span.ant-input-affix-wrapper:nth-child(1) {
+ margin-top: 22px;
+ font-size: 16px;
+ width: 50vh;
+}
+
+span.ant-input-affix-wrapper:nth-child(2) {
+  margin-top: 22px;
+  font-size: 16px;
+  width: 50vh;
+ }
+
+ .information > form:nth-child(1) {
+  text-align: center;
+  }
+
+  .ant-alert {
+    font-weight: 500;
+    text-align: center;
+    color: red;
     }
   
