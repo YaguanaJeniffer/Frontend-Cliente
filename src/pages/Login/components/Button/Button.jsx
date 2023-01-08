@@ -19,13 +19,9 @@ import "../Button/Button.css"
 const ButtonI = () => {
   //const [size, setSize] = useState<SizeType>('large'); // default is 'middle'
   return (
-    <>
-      <div direction="vertical" className='Button1'>
-          <Button className='Button2' type="primary" shape="round" size="large" style={{ backgroundColor: '#1677ff', width: '250px' }}>
+          <Button className='Button2' type="submit" shape="round" size="large" style={{ backgroundColor: '#1677ff', width: '250px', color: '#fff'}}>
             INGRESAR
           </Button>
-      </div>
-    </>
   );
 };
 

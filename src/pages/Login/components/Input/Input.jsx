@@ -18,7 +18,7 @@ import '../Input/Input.css';
 
 const InputT= () => (
   <>
-    <Input className='Text' placeholder="Usuario" prefix={<UserOutlined />} />
+    <Input className='Text' placeholder="Correo" prefix={<UserOutlined />} />
   </>
 );
 
