@@ -10,6 +10,7 @@ import { Button } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons";
 import { Alert } from "antd";
+import { Link } from 'react-router-dom';
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -87,8 +88,9 @@ class Login extends React.Component {
                 type="error"
               />
             )}
-
-            <Title text="BUS-LINK "></Title>
+            <div style={{marginTop: "131px"}}>
+            <Title text="BUS-LINK " ></Title>
+            </div>
             <Label text="Por favor inicie sesión en su cuenta."></Label>
 
             <div className="information">
@@ -114,7 +116,6 @@ class Login extends React.Component {
                   onChange={this.manejadorChange}
                 />
                 <Button
-                  className="Button2"
                   type="submit"
                   shape="round"
                   size="large"
@@ -128,6 +129,10 @@ class Login extends React.Component {
                   INGRESAR
                 </Button>
               </form>
+              <p>¿No tienes cuenta?  
+                <Link to="/register">Registrate aquí</Link>
+              </p>
+              
             </div>
 
             <Footer></Footer>
