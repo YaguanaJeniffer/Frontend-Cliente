@@ -10,7 +10,7 @@ body {
     height: 100%;
     background-color: #000;
     margin: 0;
-  }
+}
 
 .ModalHijo > div:nth-child(1) {
     text-align: center;
@@ -69,7 +69,7 @@ div.ant-form-item:nth-child(1) > div:nth-child(1) {
     background: url(../../assets/images/AdobeStock_303980052_Preview.jpeg) left;
     height: 100vh;
     background-size: cover;
-  }
+}
 
 div.ant-form-item:nth-child(2) > div:nth-child(1) {
     height: 32px;
@@ -80,7 +80,7 @@ div.ant-form-item:nth-child(2) > div:nth-child(1) {
     margin-right: 20px;
 }
 
-#basic_full_name {
+#basic_full_names {
     width: 260px;
     margin-right: 20px;
 }
@@ -95,7 +95,12 @@ div.ant-form-item:nth-child(2) > div:nth-child(1) {
     margin-right: 20px;
 }
 
-#basic_cotraseniaConfirm {
+#basic_correo {
+    width: 260px;
+    margin-right: 20px;
+}
+
+#basic_contrasenia {
     width: 260px;
     margin-right: 20px;
 }
@@ -118,13 +123,12 @@ span.ant-input-affix-wrapper:nth-child(1) {
     margin-top: 6px;
 }
 
-
 div.ant-form-item:nth-child(6) > div:nth-child(1) {
     margin-left: 110px;
 }
 
 .ant-form-item-explain-error {
-    margin-left: -140px;
+    margin-left: -240px;
 }
 
 .ant-form-item-margin-offset {
@@ -135,45 +139,62 @@ div.ant-form-item:nth-child(3) > div:nth-child(1) {
     margin-top: 25px;
 }
 
-div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1) > input:nth-child(1) {
+div.ant-form-item:nth-child(6)
+    > div:nth-child(1)
+    > div:nth-child(2)
+    > div:nth-child(1)
+    > div:nth-child(1)
+    > span:nth-child(1)
+    > input:nth-child(1) {
     width: 250px;
-   }
+}
 
-   div.ant-form-item:nth-child(6) {
+div.ant-form-item:nth-child(6) {
     margin-left: -106px;
-   }
-   div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+}
+div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
     width: 240px;
+}
+
+:where(.css-dev-only-do-not-override-k83k30).ant-form-item .ant-form-item-control-input-content {
+    flex: initial;
+    max-width: 100%;
+}
+
+#basic_cedula_help > div:nth-child(1) {
+    width: 355px;
+}
+
+#basic_full_names_help > div:nth-child(1) {
+    width: 355px;
+}
+
+#basic_celular_help > div:nth-child(1) {
+    width: 355px;
+}
+
+#basic_ciudad_help > div:nth-child(1) {
+    width: 355px;
+}
+
+#basic_contrasenina_help > div:nth-child(1) {
+    width: 355px;
+}
+
+#basic_contrasenina_help > div:nth-child(1) {
+    width: 355px;
+}
+
+.label-content {
+    color: #ffffff;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 14px;
+    margin-bottom: 30px;
+}
+
+
+div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
+    margin-top: -5px;
    }
-
-   :where(.css-dev-only-do-not-override-k83k30).ant-form-item .ant-form-item-control-input-content {
-    flex:initial;
-    max-width:100%;
-   }
-   
-   #basic_cedula_help > div:nth-child(1) {
-    width: 355px;
-   }
-
-#basic_full_name_help > div:nth-child(1) {
-    width: 355px;
-  }
-
-  #basic_celular_help > div:nth-child(1) {
-    width: 355px;
-  }
-
-  #basic_ciudad_help > div:nth-child(1) {
-    width: 355px;
-  }
-
-  #basic_contrasenia_help > div:nth-child(1) {
-    width: 355px;
-  }
-
-  #basic_cotraseniaConfirm_help > div:nth-child(1) {
-    width: 355px;
-  }
-  
-   
    

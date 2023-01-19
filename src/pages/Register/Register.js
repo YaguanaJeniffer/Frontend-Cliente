@@ -3,6 +3,11 @@ import React from "react";
 import "./Register.css";
 import Label from "../Login/components/Label/Label";
 import { Button, Form, Input } from "antd";
+import { notification } from "antd";
+//servicio
+import { ApiUrl } from "../../service/ApiRest";
+//librerias
+import axios from "axios";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -12,6 +17,69 @@ const onFinishFailed = (errorInfo) => {
 };
 
 class Register extends React.Component {
+  state = {
+    form: {
+      ci: "",
+      full_name: "",
+      phone: "",
+      city: "",
+      email: "",
+      password: "",
+    },
+    error: false,
+    errorMsg: "",
+  };
+
+  manejadorSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  manejadorChange = async (e) => {
+    await this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  manejadorBoton = () => {
+    console.log("enviado");
+    let url = ApiUrl + "auth/singup/client";
+    axios
+      .post(url, this.state.form)
+
+      .then((response) => {
+        console.log(response);
+
+        notification.open({
+          message: "Usuario registrado de manera exitosa",
+          duration: 2,
+          style: {
+            backgroundColor: "#d9f7be",
+          },
+        });
+      })
+      .catch((error) => {
+        if (error.response) {
+          // El servidor respondió con un código de estado de error
+          //console.log(error.response.data);
+          //console.log(error.response.status);
+
+          if (error.response.status === 401 || error.response.status === 400) {
+            this.setState({
+              error: true,
+              errorMsg: "El usuario ya existe.",
+            });
+          }
+        } else if (error.request) {
+          //console.log(error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -22,9 +90,9 @@ class Register extends React.Component {
             <div>
               <label className="title-label">BUS-LINK </label>
             </div>
-            <Label text="Crea una cuenta."></Label>
+            <Label text="Complete el formulario con sus datos."></Label>
 
-            <div className="information" >
+            <div className="information">
               <Form
                 name="basic"
                 labelCol={{
@@ -39,6 +107,7 @@ class Register extends React.Component {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
                 autoComplete="off"
+                onSubmit={this.handleSubmit}
               >
                 <Form.Item
                   label="Cédula"
@@ -50,7 +119,11 @@ class Register extends React.Component {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input
+                    name="ci"
+                    onChange={this.manejadorChange}
+                    maxlength="10"
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -61,7 +134,7 @@ class Register extends React.Component {
                       Completos
                     </div>
                   }
-                  name="full_name"
+                  name="full_names"
                   rules={[
                     {
                       required: true,
@@ -70,7 +143,11 @@ class Register extends React.Component {
                   ]}
                   style={{ marginBottom: 0 }}
                 >
-                  <Input />
+                  <Input
+                    name="full_name"
+                    onChange={this.manejadorChange}
+                    maxlength="50"
+                  />
                 </Form.Item>
                 <Form.Item
                   label="Celular"
@@ -82,7 +159,11 @@ class Register extends React.Component {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input
+                    name="phone"
+                    onChange={this.manejadorChange}
+                    maxlength="10"
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -95,7 +176,28 @@ class Register extends React.Component {
                     },
                   ]}
                 >
-                  <Input />
+                  <Input
+                    name="city"
+                    onChange={this.manejadorChange}
+                    maxlength="20"
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Correo"
+                  name="correo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  <Input
+                    name="email"
+                    onChange={this.manejadorChange}
+                    type="email"
+                  />
                 </Form.Item>
 
                 <Form.Item
@@ -108,29 +210,14 @@ class Register extends React.Component {
                     },
                   ]}
                 >
-                  <Input.Password />
+                  <Input.Password
+                    name="password"
+                    onChange={this.manejadorChange}
+                    maxlength="12"
+                  />
                 </Form.Item>
 
-                <Form.Item
-                  label={
-                    <div>
-                      Verificación 
-                      <br />
-                      de contraseña
-                    </div>
-                  }
-                  name="cotraseniaConfirm"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Campo vacío",
-                    },
-                  ]}
-                  >
-                  <Input.Password />
-                </Form.Item>
-
-<div style={{ textAlign: "center"}}>
+                <div style={{ textAlign: "center" }}>
                   <Button
                     className="Button2"
                     type="submit"
@@ -140,12 +227,13 @@ class Register extends React.Component {
                       backgroundColor: "#1677ff",
                       width: "250px",
                       color: "#fff",
-                      margin: "10px"
+                      margin: "10px",
                     }}
+                    onClick={this.manejadorBoton}
                   >
-                    INGRESAR
+                    REGISTRARME
                   </Button>
-                  </div>
+                </div>
               </Form>
             </div>
           </div>

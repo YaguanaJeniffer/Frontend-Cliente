@@ -16,14 +16,11 @@ body {
   background-color: #000080;
 }
 
-.ant-btn {
-  font-weight: bold;
-  margin-top: 25px;
-}
+
  
 
 span.ant-input-affix-wrapper:nth-child(1) {
-  margin-top: 20px;
+  margin-top: 15px;
   font-size: 16px;
   width: 260px;
 }
@@ -60,3 +57,7 @@ span.ant-input-affix-wrapper:nth-child(2) {
   margin-top: 14px;
   margin-bottom: 17px;
 }
+
+.information > form:nth-child(1) > div:nth-child(2) {
+  margin-top: 15px;
+ }

@@ -10,14 +10,13 @@ import { Button } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons";
 import { Alert } from "antd";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
 import axios from "axios";
 
 class Login extends React.Component {
-
   state = {
     form: {
       email: "",
@@ -45,10 +44,10 @@ class Login extends React.Component {
     axios
       .post(url, this.state.form)
       .then((response) => {
-       // console.log(response.data.data.token);
+        // console.log(response.data.data.token);
         if (response.request.status === 200) {
-            localStorage.setItem("token",response.data.data.token);
-            this.props.history.push("/home");
+          localStorage.setItem("token", response.data.data.token);
+          this.props.history.push("/home");
         } else {
           this.setState({
             error: true,
@@ -61,7 +60,7 @@ class Login extends React.Component {
           // El servidor respondió con un código de estado de error
           //console.log(error.response.data);
           //console.log(error.response.status);
-          if (error.response.status === 401 || error.response.status === 400){
+          if (error.response.status === 401 || error.response.status === 400) {
             this.setState({
               error: true,
               errorMsg: "Credenciales del usuario incorrectas",
@@ -83,27 +82,26 @@ class Login extends React.Component {
 
           <div className="ModalHijo">
             {this.state.error === true && (
-              <Alert
-                message={this.state.errorMsg}
-                type="error"
-              />
+              <Alert message={this.state.errorMsg} type="error" />
             )}
-            <div style={{marginTop: "131px"}}>
-            <Title text="BUS-LINK " ></Title>
+            <div style={{ marginTop: "131px" }}>
+              <Title text="BUS-LINK "></Title>
             </div>
             <Label text="Por favor inicie sesión en su cuenta."></Label>
 
             <div className="information">
               <form onSubmit={this.manejadorSubmit}>
-                <Input
-                  className="Text"
-                  placeholder="Correo electronico"
-                  prefix={<UserOutlined />}
-                  type="email"
-                  name="email"
-                  onChange={this.manejadorChange}
-                />
-
+                <div>
+                  <Input
+                    className="Text"
+                    placeholder="Correo electronico"
+                    prefix={<UserOutlined />}
+                    type="email"
+                    name="email"
+                    onChange={this.manejadorChange}
+                  />
+                </div>
+                <div>
                 <Input.Password
                   className="Text"
                   placeholder="Contraseña"
@@ -115,6 +113,7 @@ class Login extends React.Component {
                   name="password"
                   onChange={this.manejadorChange}
                 />
+                </div>
                 <Button
                   type="submit"
                   shape="round"
@@ -123,16 +122,17 @@ class Login extends React.Component {
                     backgroundColor: "#1677ff",
                     width: "250px",
                     color: "#fff",
+                    marginTop: "23px",
                   }}
                   onClick={this.manejadorBoton}
                 >
                   INGRESAR
                 </Button>
               </form>
-              <p>¿No tienes cuenta?  
+              <p>
+                ¿No tienes cuenta?
                 <Link to="/register">Registrate aquí</Link>
               </p>
-              
             </div>
 
             <Footer></Footer>
