@@ -4,6 +4,7 @@ import "./Register.css";
 import Label from "../Login/components/Label/Label";
 import { Button, Form, Input } from "antd";
 import { notification } from "antd";
+import { CloseCircleOutlined,CheckCircleOutlined } from "@ant-design/icons";
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -53,18 +54,38 @@ class Register extends React.Component {
         console.log(response);
 
         notification.open({
-          message: "Usuario registrado de manera exitosa",
-          duration: 2,
+          message: <span style={{ color: '#52c41a' }}><CheckCircleOutlined /> Usuario registrado de manera exitosa</span>,
+          duration: 10,
           style: {
-            backgroundColor: "#d9f7be",
+            backgroundColor: "#fff1f0",
           },
         });
+        this.props.history.push("/");
       })
       .catch((error) => {
         if (error.response) {
           // El servidor respondió con un código de estado de error
-          //console.log(error.response.data);
-          //console.log(error.response.status);
+          console.log(error.response.data.message);
+          /* console.log(error.message); */
+
+          if(error.response.data.message === "ERROR DE VALIDACIÓN"){
+            notification.open({
+              message: <span style={{ color: '#f5222d' }}><CloseCircleOutlined /> Los campos ingresados son inválidos.</span>,
+              duration: 10,
+              style: {
+                backgroundColor: "#fff1f0",
+              },
+            });
+          } else if(error.response.data.message === "Ya existe una cuenta asociada a ese email."){
+            notification.open({
+              message: <span style={{ color: '#f5222d' }}><CloseCircleOutlined /> El usuario ingresado ya existe.</span>,
+              duration: 10,
+              style: {
+                backgroundColor: "#fff1f0",
+              },
+            });
+          }
+         
 
           if (error.response.status === 401 || error.response.status === 400) {
             this.setState({
@@ -73,9 +94,11 @@ class Register extends React.Component {
             });
           }
         } else if (error.request) {
+          console.log("holi2");
           //console.log(error.request);
         } else {
           console.log("Error", error.message);
+          console.log("holi3");
         }
       });
   };
@@ -122,7 +145,7 @@ class Register extends React.Component {
                   <Input
                     name="ci"
                     onChange={this.manejadorChange}
-                    maxlength="10"
+                    maxLength="10"
                   />
                 </Form.Item>
 
@@ -146,7 +169,7 @@ class Register extends React.Component {
                   <Input
                     name="full_name"
                     onChange={this.manejadorChange}
-                    maxlength="50"
+                    maxLength="50"
                   />
                 </Form.Item>
                 <Form.Item
@@ -162,7 +185,7 @@ class Register extends React.Component {
                   <Input
                     name="phone"
                     onChange={this.manejadorChange}
-                    maxlength="10"
+                    maxLength="10"
                   />
                 </Form.Item>
 
@@ -179,7 +202,7 @@ class Register extends React.Component {
                   <Input
                     name="city"
                     onChange={this.manejadorChange}
-                    maxlength="20"
+                    maxLength="20"
                   />
                 </Form.Item>
 
@@ -213,7 +236,7 @@ class Register extends React.Component {
                   <Input.Password
                     name="password"
                     onChange={this.manejadorChange}
-                    maxlength="12"
+                    maxLength="12"
                   />
                 </Form.Item>
 

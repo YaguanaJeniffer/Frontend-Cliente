@@ -128,7 +128,7 @@ div.ant-form-item:nth-child(6) > div:nth-child(1) {
 }
 
 .ant-form-item-explain-error {
-    margin-left: -240px;
+    margin-left: -136px;
 }
 
 .ant-form-item-margin-offset {
@@ -177,12 +177,13 @@ div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-c
     width: 355px;
 }
 
-#basic_contrasenina_help > div:nth-child(1) {
+#basic_contrasenia_help > div:nth-child(1) {
     width: 355px;
 }
 
-#basic_contrasenina_help > div:nth-child(1) {
+#basic_correo_help  > div:nth-child(1) {
     width: 355px;
+    margin-left: px;
 }
 
 .label-content {
@@ -197,4 +198,6 @@ div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-c
 div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
     margin-top: -5px;
    }
+
+
    

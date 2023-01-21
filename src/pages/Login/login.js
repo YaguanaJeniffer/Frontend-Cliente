@@ -11,6 +11,8 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons";
 import { Alert } from "antd";
 import { Link } from "react-router-dom";
+import { notification } from "antd";
+import { CloseCircleOutlined } from "@ant-design/icons";
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -61,9 +63,12 @@ class Login extends React.Component {
           //console.log(error.response.data);
           //console.log(error.response.status);
           if (error.response.status === 401 || error.response.status === 400) {
-            this.setState({
-              error: true,
-              errorMsg: "Credenciales del usuario incorrectas",
+            notification.open({
+              message: <span style={{ color: '#f5222d' }}><CloseCircleOutlined /> Los campos ingresados son inválidos.</span>,
+              duration: 10,
+              style: {
+                backgroundColor: "#fff1f0",
+              },
             });
           }
         } else if (error.request) {
