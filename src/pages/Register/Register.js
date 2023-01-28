@@ -112,9 +112,11 @@ class Register extends React.Component {
             });
           }
         } else if (error.request) {
+          console.log("holi2");
           //console.log(error.request);
         } else {
           console.log("Error", error.message);
+          console.log("holi3");
         }
       });
   };
