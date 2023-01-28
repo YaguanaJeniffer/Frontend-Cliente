@@ -4,7 +4,9 @@ import "./Register.css";
 import Label from "../Login/components/Label/Label";
 import { Button, Form, Input } from "antd";
 import { notification } from "antd";
-import { CloseCircleOutlined,CheckCircleOutlined } from "@ant-design/icons";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+import { HiCheckBadge } from "react-icons/hi2";
+
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -51,41 +53,57 @@ class Register extends React.Component {
       .post(url, this.state.form)
 
       .then((response) => {
-        console.log(response);
+        //console.log(response);
 
         notification.open({
-          message: <span style={{ color: '#52c41a' }}><CheckCircleOutlined /> Usuario registrado de manera exitosa</span>,
-          duration: 10,
+          message: (
+            <div  style={{color:"#389e0d"}}>
+              <HiCheckBadge style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              <span style={{ marginLeft: '10px' }}>Usuario registrado de manera exitosa</span>
+            </div>
+          ),
+          duration: 50,
           style: {
-            backgroundColor: "#fff1f0",
+          backgroundColor: "#fff",
           },
         });
         this.props.history.push("/");
+
       })
       .catch((error) => {
         if (error.response) {
           // El servidor respondió con un código de estado de error
-          console.log(error.response.data.message);
-          /* console.log(error.message); */
-
-          if(error.response.data.message === "ERROR DE VALIDACIÓN"){
+          //console.log(error.response.data.message);
+          //console.log(error.response.status);
+          if(error.response.data.message ==="ERROR DE VALIDACIÓN"){
             notification.open({
-              message: <span style={{ color: '#f5222d' }}><CloseCircleOutlined /> Los campos ingresados son inválidos.</span>,
-              duration: 10,
+              message: (
+                <div style={{color:"red"}}>
+                  <BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  <span style={{ marginLeft: '10px' }}>Campos inválidos</span>
+                </div>
+              ),
+              duration: 50,
               style: {
-                backgroundColor: "#fff1f0",
+              backgroundColor: "#fff",
+              
               },
             });
-          } else if(error.response.data.message === "Ya existe una cuenta asociada a ese email."){
+
+          } else if(error.response.data.message ==="Ya existe una cuenta asociada a ese email."){
             notification.open({
-              message: <span style={{ color: '#f5222d' }}><CloseCircleOutlined /> El usuario ingresado ya existe.</span>,
-              duration: 10,
+              message: (
+                <div style={{color:"red"}}>
+                  <BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  <span style={{ marginLeft: '10px' }}>EL usuario ya existe.</span>
+                </div>
+              ),
+              duration: 50,
               style: {
-                backgroundColor: "#fff1f0",
+              backgroundColor: "#fff",
               },
             });
           }
-         
 
           if (error.response.status === 401 || error.response.status === 400) {
             this.setState({

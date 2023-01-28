@@ -7,6 +7,7 @@ import React from "react";
 import Principal from "./components/Principal";
 import Configuracion from "./components/Configuracion";
 
+const usuario = localStorage.getItem("email");
 const { Header, Footer, Sider, Content } = Layout;
 const headerStyle = {
   textAlign: "center",
@@ -63,6 +64,15 @@ class Home extends React.Component {
         });
         break;
 
+        case " Cerrar Sesión":
+          this.setState({
+            selectedItem: e.item.props.children,
+          });
+          localStorage.removeItem("token");
+          localStorage.removeItem("email");
+          this.props.history.push("/");
+          break;
+
       default:
         this.setState({
           selectedItem: e.item.props.children,
@@ -85,9 +95,9 @@ class Home extends React.Component {
             style={{ siderStyle, backgroundColor: "#000080", height: "100vh" }}
           >
             <div id="user-info">
-              <img src={logo} id="user-image" alt="sinloog" />
-              <span id="user-name" style={{ fontWeight: "650" }}>
-                Jeniffer Yaguana
+              <img src={logo} id="user-image" alt="sinloog" style={{marginLeft:"3px"}}/>
+              <span id="user-name" style={{ fontWeight: "650",fontSize:"11.7px",marginLeft:"-5px" }}>
+                <div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario}</div>
               </span>
             </div>
             <hr style={{ width: "185px", color: "#ffff" }} />

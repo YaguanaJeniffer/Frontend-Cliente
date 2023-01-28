@@ -1,0 +1,116 @@
+
+.Contenedor1 {
+    background: #fff;
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   }
+   
+   .Encabezado {
+    background: #000080;
+    color: #fff;
+    margin-left: 3px;
+    margin-top: 4px;
+    width: 99%;
+    height: 8%;
+    text-align: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+   }
+
+   .Encabezado > p:nth-child(1) {
+    font-size: 22px;
+    font-weight: 600;
+   }
+
+   .ant-card-body {
+    padding: 13px;
+    background: #4169E1;
+    text-align: center;
+    color: #fff;
+    font-size: 12.5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+
+   .ant-card-body > div:nth-child(1) > p {
+    margin: -5px;
+   }
+   
+   :where(.css-dev-only-do-not-override-k83k30).ant-card .ant-card-body {
+    padding:14px;
+    border-radius:0 0 8px 8px;
+   }
+   
+   .ant-card-cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #4169E1;
+   }
+
+   .ant-card-cover > img:nth-child(1) {
+    width: 88%;
+    margin-top: 6px;
+   }
+
+   div.ant-card {
+    width: 160px;
+    margin-right: 10px;
+    margin-top: 5px;
+   }
+
+   .Contenedor1 > div:nth-child(2) {
+    /*! display: flex; */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    max-height: 90%;
+    background: #E5E4E2;
+    margin-left: 5px;
+    min-height: 90%;
+   }
+
+input.ant-input:nth-child(1) {
+    width: 180px;
+  }
+  
+  input.ant-input:nth-child(2) {
+    width: 180px;
+    margin-left: 6px;
+  }
+  
+  
+   :where(.css-dev-only-do-not-override-k83k30).ant-card-bordered .ant-card-cover {
+    margin-top:-1px;
+    margin-inline-start:0px;
+    margin-inline-end:0px;
+   }
+
+
+   
+   .Contenedor1 > div:nth-child(2) > div:nth-child(1) > svg:nth-child(1) {
+    font-size: 22px;
+    margin-bottom: -4px;
+    color: #000080;
+   }
+   
+   input.ant-input:nth-child(3) {
+    margin-left: 4px;
+    width: 180px;
+   }
+   
+   :where(.css-dev-only-do-not-override-k83k30).ant-card .ant-card-body {
+    padding:9px;
+    border-radius:0 0 8px 8px;
+   }
+   

@@ -59,6 +59,19 @@
    font-weight: 800;
   }
 
+  .ant-layout-sider-children > div:nth-child(5) {
+    position: absolute;
+    bottom: 15px;
+    right: 0;
+    left: 0;
+    z-index: 1;
+   }
+   
+   .ant-layout-content {
+    background-color: rgb(212, 212, 212);
+    position: relative;
+   }
+   
   
   
    
