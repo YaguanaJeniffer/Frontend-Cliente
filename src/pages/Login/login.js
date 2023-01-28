@@ -9,8 +9,9 @@ import { Input } from "antd";
 import { Button } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { LockOutlined } from "@ant-design/icons";
-import { Alert } from "antd";
 import { Link } from "react-router-dom";
+import { notification } from "antd";
+import { BsExclamationOctagonFill } from "react-icons/bs";
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -25,6 +26,17 @@ class Login extends React.Component {
     error: false,
     errorMsg: "",
   };
+
+
+  componentDidMount() {
+    const token = localStorage.getItem("Token");
+    const username = localStorage.getItem("email");
+    if (token && username) {
+      this.props.history.push("/home");
+    }
+  }
+
+ 
 
   manejadorSubmit = (e) => {
     e.preventDefault();
@@ -47,6 +59,7 @@ class Login extends React.Component {
         // console.log(response.data.data.token);
         if (response.request.status === 200) {
           localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem("email", response.data.data.username);
           this.props.history.push("/home");
         } else {
           this.setState({
@@ -57,13 +70,19 @@ class Login extends React.Component {
       })
       .catch((error) => {
         if (error.response) {
-          // El servidor respondió con un código de estado de error
-          //console.log(error.response.data);
-          //console.log(error.response.status);
+
           if (error.response.status === 401 || error.response.status === 400) {
-            this.setState({
-              error: true,
-              errorMsg: "Credenciales del usuario incorrectas",
+            notification.open({
+              message: (
+                <div style={{color:"red"}}>
+                  <BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  <span style={{ marginLeft: '10px' }}>Credicenciales incorrectas.</span>
+                </div>
+              ),
+              duration: 50,
+              style: {
+              backgroundColor: "#fff",
+              },
             });
           }
         } else if (error.request) {
@@ -81,9 +100,6 @@ class Login extends React.Component {
           <div className="ModalPadre"></div>
 
           <div className="ModalHijo">
-            {this.state.error === true && (
-              <Alert message={this.state.errorMsg} type="error" />
-            )}
             <div style={{ marginTop: "131px" }}>
               <Title text="BUS-LINK "></Title>
             </div>

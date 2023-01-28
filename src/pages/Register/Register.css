@@ -161,29 +161,7 @@ div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-c
     max-width: 100%;
 }
 
-#basic_cedula_help > div:nth-child(1) {
-    width: 355px;
-}
 
-#basic_full_names_help > div:nth-child(1) {
-    width: 355px;
-}
-
-#basic_celular_help > div:nth-child(1) {
-    width: 355px;
-}
-
-#basic_ciudad_help > div:nth-child(1) {
-    width: 355px;
-}
-
-#basic_contrasenina_help > div:nth-child(1) {
-    width: 355px;
-}
-
-#basic_contrasenina_help > div:nth-child(1) {
-    width: 355px;
-}
 
 .label-content {
     color: #ffffff;
@@ -197,4 +175,38 @@ div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-c
 div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
     margin-top: -5px;
    }
+   
+
+
+#basic_cedula_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+
+  #basic_full_names_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+
+  #basic_celular_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+  
+  #basic_ciudad_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+  
+  #basic_correo_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+  
+  #basic_contrasenia_help > div:nth-child(1) {
+    margin-left: -150px;
+  }
+
+.ant-notification-notice-message > div:nth-child(1) {
+    text-align: center;
+  }
+  
+  .ant-notification-notice-message > div:nth-child(1) > svg:nth-child(1) > path:nth-child(1) {
+    margin-top: 14px;
+  }
    

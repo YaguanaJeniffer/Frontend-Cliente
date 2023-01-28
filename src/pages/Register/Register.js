@@ -4,6 +4,9 @@ import "./Register.css";
 import Label from "../Login/components/Label/Label";
 import { Button, Form, Input } from "antd";
 import { notification } from "antd";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+import { HiCheckBadge } from "react-icons/hi2";
+
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
@@ -50,21 +53,57 @@ class Register extends React.Component {
       .post(url, this.state.form)
 
       .then((response) => {
-        console.log(response);
+        //console.log(response);
 
         notification.open({
-          message: "Usuario registrado de manera exitosa",
-          duration: 2,
+          message: (
+            <div  style={{color:"#389e0d"}}>
+              <HiCheckBadge style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              <span style={{ marginLeft: '10px' }}>Usuario registrado de manera exitosa</span>
+            </div>
+          ),
+          duration: 50,
           style: {
-            backgroundColor: "#d9f7be",
+          backgroundColor: "#fff",
           },
         });
+        this.props.history.push("/");
+
       })
       .catch((error) => {
         if (error.response) {
           // El servidor respondió con un código de estado de error
-          //console.log(error.response.data);
+          //console.log(error.response.data.message);
           //console.log(error.response.status);
+          if(error.response.data.message ==="ERROR DE VALIDACIÓN"){
+            notification.open({
+              message: (
+                <div style={{color:"red"}}>
+                  <BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  <span style={{ marginLeft: '10px' }}>Campos inválidos</span>
+                </div>
+              ),
+              duration: 50,
+              style: {
+              backgroundColor: "#fff",
+              
+              },
+            });
+
+          } else if(error.response.data.message ==="Ya existe una cuenta asociada a ese email."){
+            notification.open({
+              message: (
+                <div style={{color:"red"}}>
+                  <BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  <span style={{ marginLeft: '10px' }}>EL usuario ya existe.</span>
+                </div>
+              ),
+              duration: 50,
+              style: {
+              backgroundColor: "#fff",
+              },
+            });
+          }
 
           if (error.response.status === 401 || error.response.status === 400) {
             this.setState({
@@ -122,7 +161,7 @@ class Register extends React.Component {
                   <Input
                     name="ci"
                     onChange={this.manejadorChange}
-                    maxlength="10"
+                    maxLength="10"
                   />
                 </Form.Item>
 
@@ -146,7 +185,7 @@ class Register extends React.Component {
                   <Input
                     name="full_name"
                     onChange={this.manejadorChange}
-                    maxlength="50"
+                    maxLength="50"
                   />
                 </Form.Item>
                 <Form.Item
@@ -162,7 +201,7 @@ class Register extends React.Component {
                   <Input
                     name="phone"
                     onChange={this.manejadorChange}
-                    maxlength="10"
+                    maxLength="10"
                   />
                 </Form.Item>
 
@@ -179,7 +218,7 @@ class Register extends React.Component {
                   <Input
                     name="city"
                     onChange={this.manejadorChange}
-                    maxlength="20"
+                    maxLength="20"
                   />
                 </Form.Item>
 
@@ -213,7 +252,7 @@ class Register extends React.Component {
                   <Input.Password
                     name="password"
                     onChange={this.manejadorChange}
-                    maxlength="12"
+                    maxLength="12"
                   />
                 </Form.Item>
 
