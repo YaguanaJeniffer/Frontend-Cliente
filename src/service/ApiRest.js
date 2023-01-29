@@ -1,1 +1,1 @@
-export const ApiUrl = " http://localhost:8090/bus_link/api/" 
+export const ApiUrl = "http://localhost:8090/bus_link/api/" 

@@ -1,5 +1,5 @@
 :where(.css-dev-only-do-not-override-k83k30).ant-card .ant-card-body{
-    height: 121px;
+    height: 150px;
    }
 
    .Contenedor1 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) {
@@ -11,7 +11,10 @@
    }
    
    .ant-pagination {
-    margin-top: 40px;
+    margin-top: 15px;
    }
+
+ 
+   
    
    
