@@ -8,15 +8,16 @@ class Principal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      origen1: '',
+      destino: '',
+      searchResults: []
     };
   }
 
 
   handleSearch = () => {
-    const { origen, destino } = this.state;
-    console.log(`Origen: ${origen} Destino: ${destino}`);
-    // Aquí puedes agregar el código para hacer la búsqueda con los valores de origen y destino
-  };
+
+  }
 
   render() {
     return (
@@ -29,8 +30,8 @@ class Principal extends React.Component {
             <FaBusAlt></FaBusAlt>
             <Input
               placeholder="Ingrese el origen"
-              value={this.state.origen}
-              onChange={(e) => this.setState({ origen: e.target.value })}
+              value={this.state.origen1}
+              onChange={(e) => this.setState({ origen1: e.target.value })}
             />
             <Input
               placeholder="Ingrese el destino"

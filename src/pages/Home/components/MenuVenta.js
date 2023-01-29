@@ -1,13 +1,14 @@
 import { Layout, Space, Menu } from "antd";
-import "../Home/home.css";
-import logo from "../../assets/images/cliente.png";
+import "../components/MenuVenta.css";
+import logo from "../../../assets/images/cliente.png";
 import { HomeFilled, ToolFilled } from "@ant-design/icons";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import React from "react";
-import Principal from "./components/Principal";
-import Configuracion from "./components/Configuracion";
+import Configuracion from "./Configuracion";
+import Venta from "./Venta";
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal } from 'antd';
+
 
 const usuario = localStorage.getItem("email");
 const { Header, Footer, Sider, Content } = Layout;
@@ -38,14 +39,14 @@ const footerStyle = {
   backgroundColor: "#7dbcea",
 };
 
-class Home extends React.Component {
+class MenuVenta extends React.Component {
   state = {
     selectedItem: (
       <p>
         <HomeFilled /> Inicio
       </p>
     ),
-    currentContent: <Principal />,
+    currentContent: <Venta/>,
   };
 
   handleMenuClick = (e) => {
@@ -53,22 +54,38 @@ class Home extends React.Component {
 
     switch (menu) {
       case " Inicio":
+        Modal.confirm({
+          title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+          cancelText: 'Cancelar',
+          icon: <ExclamationCircleFilled />,
+          okText: 'Continuar',
+          
+          onOk: () => {
         this.setState({
           selectedItem: e.item.props.children,
-          currentContent: <Principal />,
-        });
+          currentContent: this.props.history.push("/home")
+        })}
+      });
         break;
 
       case " Configuración":
+        Modal.confirm({
+          title: '¿Seguro que deseas ir a Configuración?. El proceso de la compra se anulara.',
+          cancelText: 'Cancelar',
+          icon: <ExclamationCircleFilled />,
+          okText: 'Continuar',
+          
+          onOk: () => {
         this.setState({
           selectedItem: e.item.props.children,
           currentContent: <Configuracion />,
+          })}
         });
         break;
 
         case " Cerrar Sesión":
           Modal.confirm({
-            title: '¿Seguro que deseas cerrar sesión?',
+            title: '¿Seguro que deseas cerrar sesión?. El proceso de la compra se anulara.',
             cancelText: 'Cancelar',
             icon: <ExclamationCircleFilled />,
             okText: 'Continuar',
@@ -85,7 +102,7 @@ class Home extends React.Component {
       default:
         this.setState({
           selectedItem: e.item.props.children,
-          currentContent: <Principal />,
+          currentContent: <Venta/>,
         });
     }
   };
@@ -173,4 +190,4 @@ class Home extends React.Component {
     );
   }
 }
-export default Home;
+export default MenuVenta;
