@@ -6,6 +6,8 @@ import { Button, Form, Input } from "antd";
 import { notification } from "antd";
 import { BsExclamationOctagonFill } from "react-icons/bs";
 import { HiCheckBadge } from "react-icons/hi2";
+import { Link } from "react-router-dom";
+import { FaHouseUser } from 'react-icons/fa';
 
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
@@ -62,7 +64,7 @@ class Register extends React.Component {
               <span style={{ marginLeft: '10px' }}>Usuario registrado de manera exitosa</span>
             </div>
           ),
-          duration: 50,
+          duration: 10,
           style: {
           backgroundColor: "#fff",
           },
@@ -83,7 +85,7 @@ class Register extends React.Component {
                   <span style={{ marginLeft: '10px' }}>Campos inválidos</span>
                 </div>
               ),
-              duration: 50,
+              duration: 10,
               style: {
               backgroundColor: "#fff",
               
@@ -98,7 +100,7 @@ class Register extends React.Component {
                   <span style={{ marginLeft: '10px' }}>EL usuario ya existe.</span>
                 </div>
               ),
-              duration: 50,
+              duration: 10,
               style: {
               backgroundColor: "#fff",
               },
@@ -112,11 +114,9 @@ class Register extends React.Component {
             });
           }
         } else if (error.request) {
-          console.log("holi2");
           //console.log(error.request);
         } else {
           console.log("Error", error.message);
-          console.log("holi3");
         }
       });
   };
@@ -126,8 +126,15 @@ class Register extends React.Component {
       <React.Fragment>
         <div className="Contenedor">
           <div className="ModalPadre"></div>
-
           <div className="ModalHijo">
+          <div>
+            <Link to="/">
+            <div>
+            <FaHouseUser  type="user" />
+              <p>Inicio de Sesion</p>
+            </div>
+          </Link></div>
+          
             <div>
               <label className="title-label">BUS-LINK </label>
             </div>
@@ -269,6 +276,7 @@ class Register extends React.Component {
                       width: "250px",
                       color: "#fff",
                       margin: "10px",
+                      borderColor:"#fff"
                     }}
                     onClick={this.manejadorBoton}
                   >

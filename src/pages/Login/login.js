@@ -79,7 +79,7 @@ class Login extends React.Component {
                   <span style={{ marginLeft: '10px' }}>Credicenciales incorrectas.</span>
                 </div>
               ),
-              duration: 50,
+              duration: 10,
               style: {
               backgroundColor: "#fff",
               },

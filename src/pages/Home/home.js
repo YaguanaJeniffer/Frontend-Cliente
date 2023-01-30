@@ -106,7 +106,7 @@ class Home extends React.Component {
             <div id="user-info">
               <img src={logo} id="user-image" alt="sinloog" style={{marginLeft:"3px"}}/>
               <span id="user-name" style={{ fontWeight: "650",fontSize:"11.7px",marginLeft:"-5px" }}>
-                <div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario}</div>
+                <div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario ? usuario : "Usuario"}</div>
               </span>
             </div>
             <hr style={{ width: "185px", color: "#ffff" }} />
