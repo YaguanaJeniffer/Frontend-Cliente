@@ -8,6 +8,7 @@ import Configuracion from "./Configuracion";
 import Venta from "./Venta";
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal } from 'antd';
+import { MdPointOfSale } from "react-icons/md";
 
 
 const usuario = localStorage.getItem("email");
@@ -42,11 +43,11 @@ const footerStyle = {
 class MenuVenta extends React.Component {
   state = {
     selectedItem: (
-      <p>
-        <HomeFilled /> Inicio
+      <p style={{marginBottom:"5px"}}>
+        <MdPointOfSale style={{fontSize:"26px"}}/> Venta de Boleto
       </p>
     ),
-    currentContent: <Venta/>,
+    currentContent: <Venta location={this.props.location}/>,
   };
 
   handleMenuClick = (e) => {
@@ -102,7 +103,7 @@ class MenuVenta extends React.Component {
       default:
         this.setState({
           selectedItem: e.item.props.children,
-          currentContent: <Venta/>,
+          currentContent: <Venta location={this.props.location}/>,
         });
     }
   };
