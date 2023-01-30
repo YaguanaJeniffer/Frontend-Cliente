@@ -12,10 +12,6 @@ body {
     margin: 0;
 }
 
-.ModalHijo > div:nth-child(1) {
-    text-align: center;
-    margin-top: 55px;
-}
 
 div.ant-form-item:nth-child(1) > div:nth-child(1) > div:nth-child(1) > label:nth-child(1) {
     color: #fff;
@@ -127,10 +123,6 @@ div.ant-form-item:nth-child(6) > div:nth-child(1) {
     margin-left: 110px;
 }
 
-.ant-form-item-explain-error {
-    margin-left: -136px;
-}
-
 .ant-form-item-margin-offset {
     margin-bottom: 0;
 }
@@ -175,32 +167,6 @@ div.ant-form-item:nth-child(5) > div:nth-child(1) > div:nth-child(2) > div:nth-c
 div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) {
     margin-top: -5px;
    }
-   
-
-
-#basic_cedula_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
-
-  #basic_full_names_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
-
-  #basic_celular_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
-  
-  #basic_ciudad_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
-  
-  #basic_correo_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
-  
-  #basic_contrasenia_help > div:nth-child(1) {
-    margin-left: -150px;
-  }
 
 .ant-notification-notice-message > div:nth-child(1) {
     text-align: center;
@@ -209,4 +175,41 @@ div.ant-form-item:nth-child(6) > div:nth-child(1) > div:nth-child(2) > div:nth-c
   .ant-notification-notice-message > div:nth-child(1) > svg:nth-child(1) > path:nth-child(1) {
     margin-top: 14px;
   }
+
+  :where(.css-dev-only-do-not-override-k83k30).ant-form-item .ant-form-item-explain-connected {
+    width: auto;
+   }
+
+   .ModalHijo > div:nth-child(2) {
+    text-align: center;
+    margin-top: 0px;
+   }
+
+   .ModalHijo > a:nth-child(1) > div:nth-child(1) {
+    width: 70px;
+   }
+   
+   .ModalHijo > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) > p:nth-child(2) {
+    margin-top: 0px;
+    margin-bottom: 0px;
+   }
+
+   .ModalHijo > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) {
+    color: #fff;
+    width: 75px;
+    text-align: center;
+   }
+   
+   .ModalHijo > div:nth-child(1) > a:nth-child(1) > div:nth-child(1) > svg:nth-child(1) {
+    font-size: 30px;
+   }
+   
+   .ModalHijo > div:nth-child(1) {
+    text-align: -moz-right;
+    text-align: -webkit-right;
+    margin-top: 30px;
+    margin-right: 20px;
+   }
+
+
    
