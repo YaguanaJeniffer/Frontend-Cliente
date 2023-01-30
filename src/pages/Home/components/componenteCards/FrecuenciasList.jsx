@@ -184,8 +184,10 @@ class CardList extends React.Component {
         <div style={{ textAlign: "center", margin: "5px",flexWrap:"wrap",marginTop:"15px" }}>
             
         {currentItems.map(item =>
-
-          <Link to='venta/'>
+        <Link to={{
+          pathname: "/venta",
+          state: { id: item.id }
+        }}>
               <Card
               cover={
                 <img alt="Cooperativa" src={ item.bus.cooperative.image ? `data:image/jpeg;base64,${item.bus.cooperative.image}` : `data:image/jpeg;base64,${imagen}` } style={{height:"115px"}}/>
@@ -197,7 +199,6 @@ class CardList extends React.Component {
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Origen:</span><span style={{marginLeft:'10px'}}>{item.frequency.origen}</span></p>
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Destino:</span><span style={{marginLeft:'5px'}}>{item.frequency.destiny}</span></p>
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Tipo:</span><span style={{marginLeft:'24px'}}>{item.frequency.type}</span></p>
-                <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Hora de:</span><span style={{marginLeft:'14px'}}>{item.frequency.price}</span><span>$</span></p>
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Precio:</span><span style={{marginLeft:'14px'}}>{item.frequency.price}</span><span>$</span></p>
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Tiempo:</span><span style={{marginLeft:'6px'}}>{item.frequency.hours}</span><span style={{marginRight:"2px"}}>h</span><span>{item.frequency.minutes}</span><span style={{marginLeft:"1px"}}>min</span></p>
                 <p style={{textAlign:"left"}}><span style={{fontWeight:"bold"}}>Hora de Salida:</span><span style={{marginLeft:'5px'}}>{item.departureTime}</span></p>
