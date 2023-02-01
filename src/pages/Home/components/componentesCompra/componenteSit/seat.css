@@ -1,0 +1,115 @@
+.bus-container {
+    display: flex;
+    justify-content: center;
+    border: 3px solid #1677ff;
+    width: 134px;
+    margin: 5px;
+  }
+  
+  .seats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    width: 121px;
+  }
+
+  .seats-container:hover{
+    cursor: pointer;
+  }
+  
+  .seats-container div {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+    border: 1px solid black;
+    font-weight: bold;
+  }
+
+  .Contenedor2 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+    width: 150px;
+    max-width: 150px;
+    margin: 2px;
+   }
+   
+   .Contenedor2 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) {
+    width: 131px;
+    height: 75px;
+    border: 2px solid #2f54eb;
+    border-radius: 10px;
+    padding: 3px;
+    font-size: 12px;
+   }
+
+    
+  .Contenedor2 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > p:nth-child(1) {
+    margin: 2.2px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  
+  .Contenedor2 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+    width: 131px;
+    height: 75px;
+    border: 2px solid #2f54eb;
+    border-radius: 10px;
+    padding: 3px;
+    font-size: 12px;
+   }
+
+   .ant-btn {
+    margin: 5px;
+  }
+  
+  .Contenedor2 > div:nth-child(2) > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) {
+    margin: 5px;
+    margin-right: 10px;
+  }
+  
+   
+  .Contenedor2 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+    width: 131px;
+    height: 75px;
+    border: 2px solid #2f54eb;
+    border-radius: 10px;
+    padding: 3px;
+    font-size: 12px;
+   }
+
+   
+   
+   .Contenedor2 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(1) {
+    margin: 2.2px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+   }
+   
+   .Contenedor2 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > div:nth-child(2) {
+    align-content: center;
+    margin-left: 7px;
+   }
+   
+
+   .Contenedor2 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > p:nth-child(1) {
+    margin: 2.2px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    width: 140px;
+   }
+   
+   .Contenedor2 > div:nth-child(2) > div:nth-child(2) > div:nth-child(1) {
+    width: 145px;
+    background: #f0f5ff;
+    height: 382px;
+   }
+   
+   
