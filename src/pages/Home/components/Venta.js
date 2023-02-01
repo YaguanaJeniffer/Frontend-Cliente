@@ -4,6 +4,7 @@ import {imagen} from "../../../assets/images/imgAlt"
 import { Button } from 'antd';
 //librerias
 import axios from "axios";
+import { withRouter } from 'react-router-dom';
 //servicio
 import { ApiUrl } from "../../../service/ApiRest";
 
@@ -37,6 +38,17 @@ class Venta extends React.Component {
       });
   }
 
+  handleClick(frecuencias) {
+    this.props.history.push({
+      pathname: "/venta/ticket",
+      state: { frecuencias: frecuencias }
+    });
+  }
+
+  handleClickCancelar() {
+    this.props.history.push("/home");
+  }
+
   render() {
     const { frecuencias  } = this.state;
     return (
@@ -44,7 +56,11 @@ class Venta extends React.Component {
         <div>
           <p>INFORMACIÓN DEL ITINERARIO</p>
         </div>
-        {frecuencias.map((item) => (
+        {frecuencias.length === 0 ? 
+        <div className="Loading">
+
+        </div> 
+        : frecuencias.map((item) => (
           <div>
             <div>
               <img alt="Cooperativa" src={ item.bus.cooperative.image ? `data:image/jpeg;base64,${item.bus.cooperative.image}` : `data:image/jpeg;base64,${imagen}` } style={{height:"140px",width:"150px"}}/>
@@ -67,8 +83,8 @@ class Venta extends React.Component {
                 <p style={{textAlign:"left",margin:"1px"}}><span style={{fontWeight:"bold",color:"#000080"}}>Chassis:</span><span style={{marginLeft:'14px'}}>{item.bus.chassis}</span></p>
               </div>
               <div>
-                   <Button onClick="{handleCancel}">Comprar</Button>
-                   <Button onClick="{handleBuy}">Cancelar</Button>
+                   <Button onClick={() => this.handleClick(this.state.frecuencias)}>Comprar</Button>
+                   <Button onClick={() => this.handleClickCancelar()}>Regresar</Button>
               </div>
               </div>
               </div>
@@ -78,4 +94,4 @@ class Venta extends React.Component {
     );
   }
 }
-export default Venta;
+export default withRouter(Venta);

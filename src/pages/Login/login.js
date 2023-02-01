@@ -36,8 +36,6 @@ class Login extends React.Component {
     }
   }
 
- 
-
   manejadorSubmit = (e) => {
     e.preventDefault();
   };

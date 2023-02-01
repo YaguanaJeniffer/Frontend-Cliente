@@ -78,25 +78,14 @@
 
    button.ant-btn:nth-child(1) {
     width: 180px;
-    color: #f5222d;
-    border-color: #f5222d;
-    background: #fff1f0;
-   }
-
-   button.ant-btn:nth-child(2) {
-    width: 180px;
     color: #52c41a;
     border-color: #52c41a;
     background: #f6ffed;
    }
-   
-   
-   
-   
-  
-  
-   
 
-
-     
-   
+   button.ant-btn:nth-child(2) {
+    width: 180px;
+    color: #f5222d;
+    border-color: #f5222d;
+    background: #fff1f0;
+   }
