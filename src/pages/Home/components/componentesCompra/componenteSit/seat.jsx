@@ -26,15 +26,14 @@ class Seat extends Component {
 }
 
 class Seats extends Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
-        selected: []
+      selected: [],
     };
   }
-  
+
   handleSelect = (seat) => {
     if (
       seat.status === "OCUPADO" ||
@@ -42,14 +41,16 @@ class Seats extends Component {
     ) {
       return;
     }
-  
-    this.setState((prevState) => ({
-      selected: [...prevState.selected, seat.number],
-    }), () => {
-      this.handleSelectSeats(this.state.selected);
-    });
+
+    this.setState(
+      (prevState) => ({
+        selected: [...prevState.selected, seat.number],
+      }),
+      () => {
+        this.handleSelectSeats(this.state.selected);
+      }
+    );
   };
-  
 
   handleClear = () => {
     this.setState({ selected: [] });
@@ -58,7 +59,7 @@ class Seats extends Component {
   handleSelectSeats = (selected) => {
     this.props.onSelectSeats(selected);
   };
-  
+
   render() {
     const frecuencias = this.props.seating;
     const { selected } = this.state;
@@ -76,12 +77,19 @@ class Seats extends Component {
             ))}
           </div>
         </div>
-        <div style={{ wordWrap: "break-word" ,width: "130px"}}>
+        <div style={{ wordWrap: "break-word", width: "130px" }}>
           <p>Asientos elegidos:</p>
           <div>{selected.join(",")}</div>
         </div>
         <div>
-          <Button onClick={this.handleClear}>Limpiar</Button>
+          <Button
+            onClick={() => {
+              this.props.handleClear();
+              this.handleClear();
+            }}
+          >
+            Limpiar
+          </Button>
         </div>
       </div>
     );
