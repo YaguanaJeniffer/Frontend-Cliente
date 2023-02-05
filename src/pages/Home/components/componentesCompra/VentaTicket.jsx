@@ -2,14 +2,14 @@ import { Layout, Space, Menu } from "antd";
 
 import "../../components/MenuVenta.css";
 import logo from "../../../../assets/images/cliente.png";
-import { HomeFilled, ToolFilled } from "@ant-design/icons";
+import { HomeFilled } from "@ant-design/icons";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import React from "react";
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal } from 'antd';
 import { MdPointOfSale } from "react-icons/md";
 import Ticket from "./ticket";
-import Configuracion from "../Configuracion";
+import { IoNewspaperSharp } from "react-icons/io5";
 
 
 const usuario = localStorage.getItem("email");
@@ -70,20 +70,20 @@ class VentaTicket extends React.Component {
       });
         break;
 
-      case " Configuración":
-        Modal.confirm({
-          title: '¿Seguro que deseas ir a Configuración?. El proceso de la compra se anulara.',
-          cancelText: 'Cancelar',
-          icon: <ExclamationCircleFilled />,
-          okText: 'Continuar',
-          
-          onOk: () => {
-        this.setState({
-          selectedItem: e.item.props.children,
-          currentContent: <Configuracion />,
+        case " Comprobantes":
+          Modal.confirm({
+            title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+            cancelText: 'Cancelar',
+            icon: <ExclamationCircleFilled />,
+            okText: 'Continuar',
+            
+            onOk: () => {
+          this.setState({
+            selectedItem: e.item.props.children,
+            currentContent: this.props.history.push("/comprobante")
           })}
         });
-        break;
+          break;
 
         case " Cerrar Sesión":
           Modal.confirm({
@@ -146,6 +146,11 @@ class VentaTicket extends React.Component {
                   icon: <HomeFilled />,
                   label: " Inicio",
                 },
+                {
+                  key: "2",
+                  icon: <IoNewspaperSharp />,
+                  label: " Comprobantes",
+                },
               ]}
             />
             <div style={{ marginTop: "428px" }}>
@@ -161,13 +166,9 @@ class VentaTicket extends React.Component {
                 mode="inline"
                 onClick={this.handleMenuClick}
                 items={[
+
                   {
-                    key: "1",
-                    icon: <ToolFilled />,
-                    label: " Configuración",
-                  },
-                  {
-                    key: "2",
+                    key: "3",
                     icon: <RiLogoutBoxRFill />,
                     label: " Cerrar Sesión",
                   },

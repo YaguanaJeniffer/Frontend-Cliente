@@ -1,15 +1,16 @@
 import { Layout, Space, Menu } from "antd";
-import "../Home/home.css";
-import logo from "../../assets/images/cliente.png";
+import "../components/Comprobante.css";
+import { withRouter } from "react-router-dom";
+import logo from "../../../assets/images/cliente.png";
 import { HomeFilled } from "@ant-design/icons";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import React from "react";
-import Principal from "./components/Principal";
-
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal } from 'antd';
-import Comprobantes from "./components/ComprobanteVenta";
+import { MdPointOfSale } from "react-icons/md";
 import { IoNewspaperSharp } from "react-icons/io5";
+import ComprobanteDetalle from "./Comprobante";
+import Comprobante from "./Comprobante";
 
 const usuario = localStorage.getItem("email");
 const { Header, Footer, Sider, Content } = Layout;
@@ -40,14 +41,14 @@ const footerStyle = {
   backgroundColor: "#7dbcea",
 };
 
-class Home extends React.Component {
+class MenuComprobante extends React.Component {
   state = {
     selectedItem: (
-      <p>
-        <HomeFilled /> Inicio
+      <p style={{marginBottom:"5px"}}>
+        <MdPointOfSale style={{fontSize:"26px"}}/> Venta de Boleto
       </p>
     ),
-    currentContent: <Principal />,
+    currentContent: <ComprobanteDetalle location={this.props.location}  history={this.props.history}/>,
   };
 
   handleMenuClick = (e) => {
@@ -55,23 +56,29 @@ class Home extends React.Component {
 
     switch (menu) {
       case " Inicio":
+        Modal.confirm({
+          title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+          cancelText: 'Cancelar',
+          icon: <ExclamationCircleFilled />,
+          okText: 'Continuar',
+          
+          onOk: () => {
         this.setState({
           selectedItem: e.item.props.children,
-          currentContent: <Principal />,
-        });
+          currentContent: this.props.history.push("/home")
+        })}
+      });
         break;
-
-      case " Comprobantes":
-        this.setState({
-          selectedItem: e.item.props.children,
-          currentContent: <Comprobantes />,
-        });
-        break;
-      
+        case " Comprobantes":
+            this.setState({
+                selectedItem: e.item.props.children,
+                currentContent: <Comprobante />,
+            });
+            break;
 
         case " Cerrar Sesión":
           Modal.confirm({
-            title: '¿Seguro que deseas cerrar sesión?',
+            title: '¿Seguro que deseas cerrar sesión?. El proceso de la compra se anulara.',
             cancelText: 'Cancelar',
             icon: <ExclamationCircleFilled />,
             okText: 'Continuar',
@@ -88,7 +95,7 @@ class Home extends React.Component {
       default:
         this.setState({
           selectedItem: e.item.props.children,
-          currentContent: <Principal />,
+          currentContent: <Comprobante location={this.props.location} history={this.props.history}/>,
         });
     }
   };
@@ -109,7 +116,7 @@ class Home extends React.Component {
             <div id="user-info">
               <img src={logo} id="user-image" alt="sinloog" style={{marginLeft:"3px"}}/>
               <span id="user-name" style={{ fontWeight: "650",fontSize:"11.7px",marginLeft:"-5px" }}>
-                <div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario ? usuario : "Usuario"}</div>
+                <div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario}</div>
               </span>
             </div>
             <hr style={{ width: "185px", color: "#ffff" }} />
@@ -122,7 +129,7 @@ class Home extends React.Component {
               }}
               mode="inline"
               onClick={this.handleMenuClick}
-              defaultSelectedKeys={["1"]}
+              defaultSelectedKeys={["2"]}
               items={[
                 {
                   key: "1",
@@ -130,10 +137,10 @@ class Home extends React.Component {
                   label: " Inicio",
                 },
                 {
-                  key: "2",
-                  icon: <IoNewspaperSharp />,
-                  label: " Comprobantes",
-                },
+                    key: "2",
+                    icon: <IoNewspaperSharp />,
+                    label: " Comprobantes",
+                  },
               ]}
             />
             <div style={{ marginTop: "428px" }}>
@@ -149,6 +156,7 @@ class Home extends React.Component {
                 mode="inline"
                 onClick={this.handleMenuClick}
                 items={[
+
                   {
                     key: "3",
                     icon: <RiLogoutBoxRFill />,
@@ -176,4 +184,4 @@ class Home extends React.Component {
     );
   }
 }
-export default Home;
+export default withRouter(MenuComprobante);
