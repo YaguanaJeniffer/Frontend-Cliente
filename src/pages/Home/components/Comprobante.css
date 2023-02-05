@@ -140,3 +140,16 @@ button.ant-btn:nth-child(2) {
 .ant-notification-notice-message > div:nth-child(1) {
   text-align: justify;
 }
+
+.Contenedor5 {
+  height: 98%;
+}
+
+.Contenedor5 > div:nth-child(2) {
+  /* height: 100%; */
+  height: 79%;
+}
+
+.Contenedor5 > div:nth-child(1) > p:nth-child(1) {
+  margin: 10px;
+}

@@ -172,7 +172,7 @@ class MenuComprobante extends React.Component {
             >
               {this.state.selectedItem}
             </Header>
-            <Content style={{ contentStyle, backgroundColor: "#D4D4D4" }}>
+            <Content style={{ contentStyle, backgroundColor: "#D4D4D4",height:"auto" }}>
               {this.state.currentContent}
             </Content>
             <Footer style={{ footerStyle, backgroundColor: "#000080" }}>

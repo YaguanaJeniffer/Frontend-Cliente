@@ -162,6 +162,10 @@ class Ticket extends React.Component {
           });
   }
 
+  clearValues = () => {
+    this.setState({ suma: 0, asientos:[] });
+  };
+
 
   render() {
 
@@ -200,7 +204,7 @@ class Ticket extends React.Component {
             </div>
             <div key={item.id}>
 
-            <Seats seating={item.bus.seating} onSelectSeats={this.handleSeatsSelection} ></Seats>
+            <Seats seating={item.bus.seating} onSelectSeats={this.handleSeatsSelection}  handleClear={this.clearValues} ></Seats>
             </div>
           </div>
         ))}

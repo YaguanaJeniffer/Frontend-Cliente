@@ -71,7 +71,7 @@ class MenuVenta extends React.Component {
 
         case " Comprobantes":
           Modal.confirm({
-            title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+            title: '¿Seguro que deseas ir a la seccion Comprobantes?. El proceso de la compra se anulara.',
             cancelText: 'Cancelar',
             icon: <ExclamationCircleFilled />,
             okText: 'Continuar',
