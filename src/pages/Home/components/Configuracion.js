@@ -1,7 +1,6 @@
 import React  from 'react';
 
 
-
 class Configuracion extends React.Component {
 
 
