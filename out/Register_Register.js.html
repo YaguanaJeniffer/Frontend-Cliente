@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Register/Register.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Register/Register.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+@file Register.js
+@author Jeniffer
+@desc [Archivo para registarse]
+@return {React.Fragment} Devuelve un componente React.Fragment que contiene un formulario de registro.
+*/
+import React from "react";
+//css
+import "./Register.css";
+import Label from "../Login/components/Label/Label";
+import { Button, Form, Input } from "antd";
+import { notification } from "antd";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+import { HiCheckBadge } from "react-icons/hi2";
+import { Link } from "react-router-dom";
+import { FaHouseUser } from 'react-icons/fa';
+//servicio
+import { ApiUrl } from "../../service/ApiRest";
+//librerias
+import axios from "axios";
+
+/**
+
+Función que muestra un mensaje de éxito en la consola.
+@param {object} values - Valores recibidos.
+@returns {void}
+*/
+const onFinish = (values) => {
+  console.log("Success:", values);
+};
+
+/**
+Función que muestra un mensaje de error en la consola.
+@param {object} errorInfo - Información sobre el error.
+@returns {void}
+*/
+const onFinishFailed = (errorInfo) => {
+  console.log("Failed:", errorInfo);
+};
+
+/**
+
+Clase que representa el componente de registro de usuario.
+@class
+@extends React.Component
+*/
+
+class Register extends React.Component {
+/*
+Estado inicial del componente.
+@type {object}
+@property {object} form - Datos del formulario.
+@property {boolean} error - Indicador de error.
+@property {string} errorMsg - Mensaje de error.
+*/
+  state = {
+    form: {
+      ci: "",
+      full_name: "",
+      phone: "",
+      city: "",
+      email: "",
+      password: "",
+    },
+    error: false,
+    errorMsg: "",
+  };
+
+  /**
+  Manejador de evento de submit.
+  @param {object} e - Evento.
+  @returns {void}
+  */
+  manejadorSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  /**
+  Manejador de evento de cambio de input.
+  @param {object} e - Evento.
+  @returns {void}
+  */
+  manejadorChange = async (e) => {
+    await this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  /**
+  Manejador de evento de clic en botón.
+  @returns {void}
+  */
+  manejadorBoton = () => {
+    console.log("enviado");
+    let url = ApiUrl + "auth/singup/client";
+    axios
+      .post(url, this.state.form)
+
+      .then((response) => {
+        //console.log(response);
+
+        notification.open({
+          message: (
+            &lt;div  style={{color:"#389e0d"}}>
+              &lt;HiCheckBadge style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              &lt;span style={{ marginLeft: '10px' }}>Usuario registrado de manera exitosa&lt;/span>
+            &lt;/div>
+          ),
+          duration: 10,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.props.history.push("/");
+
+      })
+      .catch((error) => {
+        if (error.response) {
+          // El servidor respondió con un código de estado de error
+          //console.log(error.response.data.message);
+          //console.log(error.response.status);
+          if(error.response.data.message ==="ERROR DE VALIDACIÓN"){
+            notification.open({
+              message: (
+                &lt;div style={{color:"red"}}>
+                  &lt;BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  &lt;span style={{ marginLeft: '10px' }}>Campos inválidos&lt;/span>
+                &lt;/div>
+              ),
+              duration: 10,
+              style: {
+              backgroundColor: "#fff",
+              
+              },
+            });
+
+          } else if(error.response.data.message ==="Ya existe una cuenta asociada a ese email."){
+            notification.open({
+              message: (
+                &lt;div style={{color:"red"}}>
+                  &lt;BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  &lt;span style={{ marginLeft: '10px' }}>EL usuario ya existe.&lt;/span>
+                &lt;/div>
+              ),
+              duration: 10,
+              style: {
+              backgroundColor: "#fff",
+              },
+            });
+          }
+
+          if (error.response.status === 401 || error.response.status === 400) {
+            this.setState({
+              error: true,
+              errorMsg: "El usuario ya existe.",
+            });
+          }
+        } else if (error.request) {
+          //console.log(error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
+  };
+
+  /**
+  @desc [Función que renderiza el componente. Muestra un formulario de registro en una ventana modal.]
+  @return {React.Fragment} Devuelve un componente React.Fragment que contiene un formulario de registro.
+  */
+  render() {
+    return (
+      &lt;React.Fragment>
+        &lt;div className="Contenedor">
+          &lt;div className="ModalPadre">&lt;/div>
+          &lt;div className="ModalHijo">
+          &lt;div>
+            &lt;Link to="/">
+            &lt;div>
+            &lt;FaHouseUser  type="user" />
+              &lt;p>Inicio de Sesion&lt;/p>
+            &lt;/div>
+          &lt;/Link>&lt;/div>
+          
+            &lt;div>
+              &lt;label className="title-label">BUS-LINK &lt;/label>
+            &lt;/div>
+            &lt;Label text="Complete el formulario con sus datos.">&lt;/Label>
+
+            &lt;div className="information">
+              &lt;Form
+                name="basic"
+                labelCol={{
+                  span: 7,
+                }}
+                wrapperCol={{
+                  span: 15,
+                }}
+                initialValues={{
+                  remember: true,
+                }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+                onSubmit={this.handleSubmit}
+              >
+                &lt;Form.Item
+                  label="Cédula"
+                  name="cedula"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  &lt;Input
+                    name="ci"
+                    onChange={this.manejadorChange}
+                    maxLength="10"
+                  />
+                &lt;/Form.Item>
+
+                &lt;Form.Item
+                  label={
+                    &lt;div>
+                      Nombres
+                      &lt;br />
+                      Completos
+                    &lt;/div>
+                  }
+                  name="full_names"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                  style={{ marginBottom: 0 }}
+                >
+                  &lt;Input
+                    name="full_name"
+                    onChange={this.manejadorChange}
+                    maxLength="50"
+                  />
+                &lt;/Form.Item>
+                &lt;Form.Item
+                  label="Celular"
+                  name="celular"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  &lt;Input
+                    name="phone"
+                    onChange={this.manejadorChange}
+                    maxLength="10"
+                  />
+                &lt;/Form.Item>
+
+                &lt;Form.Item
+                  label="Ciudad"
+                  name="ciudad"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  &lt;Input
+                    name="city"
+                    onChange={this.manejadorChange}
+                    maxLength="20"
+                  />
+                &lt;/Form.Item>
+
+                &lt;Form.Item
+                  label="Correo"
+                  name="correo"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  &lt;Input
+                    name="email"
+                    onChange={this.manejadorChange}
+                    type="email"
+                  />
+                &lt;/Form.Item>
+
+                &lt;Form.Item
+                  label="Contraseña"
+                  name="contrasenia"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Campo vacío",
+                    },
+                  ]}
+                >
+                  &lt;Input.Password
+                    name="password"
+                    onChange={this.manejadorChange}
+                    maxLength="12"
+                  />
+                &lt;/Form.Item>
+
+                &lt;div style={{ textAlign: "center" }}>
+                  &lt;Button
+                    className="Button2"
+                    type="submit"
+                    shape="round"
+                    size="large"
+                    style={{
+                      backgroundColor: "#1677ff",
+                      width: "250px",
+                      color: "#fff",
+                      margin: "10px",
+                      borderColor:"#fff"
+                    }}
+                    onClick={this.manejadorBoton}
+                  >
+                    REGISTRARME
+                  &lt;/Button>
+                &lt;/div>
+              &lt;/Form>
+            &lt;/div>
+          &lt;/div>
+        &lt;/div>
+      &lt;/React.Fragment>
+    );
+  }
+}
+/**
+ * Exporta la clase Register para ser utilizada en otros componentes.
+ * @default
+ */
+export default Register;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Register.html">Register</a></li><li><a href="module-Login.Login.html">Login</a></li></ul><h3>Global</h3><ul><li><a href="global.html#manejadorBoton">manejadorBoton</a></li><li><a href="global.html#manejadorChange">manejadorChange</a></li><li><a href="global.html#manejadorSubmit">manejadorSubmit</a></li><li><a href="global.html#onFinish">onFinish</a></li><li><a href="global.html#onFinishFailed">onFinishFailed</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:33:42 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

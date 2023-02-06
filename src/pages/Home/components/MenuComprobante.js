@@ -1,3 +1,8 @@
+/**
+
+@file Archivo que renderiza el menú lateral y la sección principal de la página de Comprobante
+@author Jeniffer
+*/
 import { Layout, Space, Menu } from "antd";
 import "../components/Comprobante.css";
 import { withRouter } from "react-router-dom";
@@ -12,8 +17,16 @@ import { IoNewspaperSharp } from "react-icons/io5";
 import ComprobanteDetalle from "./Comprobante";
 import Comprobante from "./Comprobante";
 
+/**
+@constant usuario Almacena el email del usuario actual que se encuentra en el localStorage
+*/
 const usuario = localStorage.getItem("email");
+
 const { Header, Footer, Sider, Content } = Layout;
+
+/**
+@constant headerStyle Estilo para el header del layout
+*/
 const headerStyle = {
   textAlign: "center",
   color: "#fff",
@@ -22,6 +35,10 @@ const headerStyle = {
   lineHeight: "64px",
   backgroundColor: "#7dbcea",
 };
+
+/**
+@constant contentStyle Estilo para el contenido del layout
+*/
 const contentStyle = {
   textAlign: "center",
   minHeight: 120,
@@ -29,19 +46,35 @@ const contentStyle = {
   color: "#fff",
   backgroundColor: "#108ee9",
 };
+/**
+@constant siderStyle Estilo para el sider del layout
+*/
 const siderStyle = {
   textAlign: "center",
   lineHeight: "120px",
   color: "#fff",
   backgroundColor: "#3ba0e9",
 };
+/**
+@constant footerStyle Estilo para el footer del layout
+*/
 const footerStyle = {
   textAlign: "center",
   color: "#fff",
   backgroundColor: "#7dbcea",
 };
 
+/**
+
+@class
+@classdesc Clase que renderiza el menú lateral y la sección principal de la página de Comprobante.
+*/
 class MenuComprobante extends React.Component {
+  /*
+@constructor
+@property {object} selectedItem Almacena el item seleccionado actualmente en el menú
+@property {object} currentContent Almacena el contenido actual que se está mostrando
+*/
   state = {
     selectedItem: (
       <p style={{marginBottom:"5px"}}>
@@ -51,6 +84,9 @@ class MenuComprobante extends React.Component {
     currentContent: <ComprobanteDetalle location={this.props.location}  history={this.props.history}/>,
   };
 
+/*
+Obtiene el nombre del elemento seleccionado en el menú
+*/
   handleMenuClick = (e) => {
     let menu = e.item.props.children[0][1].props.children;
 
@@ -100,6 +136,10 @@ class MenuComprobante extends React.Component {
     }
   };
 
+  /*
+  @description Renderiza el componente con una estructura de Layout de Ant Design y contiene un menú lateral y un contenido central.
+  @returns {JSX} Elemento JSX que representa el componente.
+  */
   render() {
     return (
       <Space
@@ -184,4 +224,9 @@ class MenuComprobante extends React.Component {
     );
   }
 }
+
+/**
+ * Exporta la clase MenuComprobante para ser utilizada en otros componentes.
+ * @default
+ */
 export default withRouter(MenuComprobante);

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: MenuComprobante.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: MenuComprobante.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+
+@file Archivo que renderiza el menú lateral y la sección principal de la página de Comprobante
+@author Jeniffer
+*/
+import { Layout, Space, Menu } from "antd";
+import "../components/Comprobante.css";
+import { withRouter } from "react-router-dom";
+import logo from "../../../assets/images/cliente.png";
+import { HomeFilled } from "@ant-design/icons";
+import { RiLogoutBoxRFill } from "react-icons/ri";
+import React from "react";
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Modal } from 'antd';
+import { MdPointOfSale } from "react-icons/md";
+import { IoNewspaperSharp } from "react-icons/io5";
+import ComprobanteDetalle from "./Comprobante";
+import Comprobante from "./Comprobante";
+
+/**
+@constant usuario Almacena el email del usuario actual que se encuentra en el localStorage
+*/
+const usuario = localStorage.getItem("email");
+
+const { Header, Footer, Sider, Content } = Layout;
+
+/**
+@constant headerStyle Estilo para el header del layout
+*/
+const headerStyle = {
+  textAlign: "center",
+  color: "#fff",
+  height: 64,
+  paddingInline: 50,
+  lineHeight: "64px",
+  backgroundColor: "#7dbcea",
+};
+
+/**
+@constant contentStyle Estilo para el contenido del layout
+*/
+const contentStyle = {
+  textAlign: "center",
+  minHeight: 120,
+  lineHeight: "120px",
+  color: "#fff",
+  backgroundColor: "#108ee9",
+};
+/**
+@constant siderStyle Estilo para el sider del layout
+*/
+const siderStyle = {
+  textAlign: "center",
+  lineHeight: "120px",
+  color: "#fff",
+  backgroundColor: "#3ba0e9",
+};
+/**
+@constant footerStyle Estilo para el footer del layout
+*/
+const footerStyle = {
+  textAlign: "center",
+  color: "#fff",
+  backgroundColor: "#7dbcea",
+};
+
+/**
+
+@class
+@classdesc Clase que renderiza el menú lateral y la sección principal de la página de Comprobante.
+*/
+class MenuComprobante extends React.Component {
+  /*
+@constructor
+@property {object} selectedItem Almacena el item seleccionado actualmente en el menú
+@property {object} currentContent Almacena el contenido actual que se está mostrando
+*/
+  state = {
+    selectedItem: (
+      &lt;p style={{marginBottom:"5px"}}>
+        &lt;MdPointOfSale style={{fontSize:"26px"}}/> Venta de Boleto
+      &lt;/p>
+    ),
+    currentContent: &lt;ComprobanteDetalle location={this.props.location}  history={this.props.history}/>,
+  };
+
+/*
+Obtiene el nombre del elemento seleccionado en el menú
+*/
+  handleMenuClick = (e) => {
+    let menu = e.item.props.children[0][1].props.children;
+
+    switch (menu) {
+      case " Inicio":
+        Modal.confirm({
+          title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+          cancelText: 'Cancelar',
+          icon: &lt;ExclamationCircleFilled />,
+          okText: 'Continuar',
+          
+          onOk: () => {
+        this.setState({
+          selectedItem: e.item.props.children,
+          currentContent: this.props.history.push("/home")
+        })}
+      });
+        break;
+        case " Comprobantes":
+            this.setState({
+                selectedItem: e.item.props.children,
+                currentContent: &lt;Comprobante />,
+            });
+            break;
+
+        case " Cerrar Sesión":
+          Modal.confirm({
+            title: '¿Seguro que deseas cerrar sesión?. El proceso de la compra se anulara.',
+            cancelText: 'Cancelar',
+            icon: &lt;ExclamationCircleFilled />,
+            okText: 'Continuar',
+            
+            onOk: () => {
+              this.setState({ selectedItem: e.item.props.children });
+              localStorage.removeItem("token");
+              localStorage.removeItem("correo electrónico");
+              this.props.history.push("/");
+            },
+          });
+          break;
+
+      default:
+        this.setState({
+          selectedItem: e.item.props.children,
+          currentContent: &lt;Comprobante location={this.props.location} history={this.props.history}/>,
+        });
+    }
+  };
+
+  /*
+  @description Renderiza el componente con una estructura de Layout de Ant Design y contiene un menú lateral y un contenido central.
+  @returns {JSX} Elemento JSX que representa el componente.
+  */
+  render() {
+    return (
+      &lt;Space
+        direction="vertical"
+        style={{
+          width: "100%",
+        }}
+        size={[0, 48]}
+      >
+        &lt;Layout>
+          &lt;Sider
+            style={{ siderStyle, backgroundColor: "#000080", height: "100vh" }}
+          >
+            &lt;div id="user-info">
+              &lt;img src={logo} id="user-image" alt="sinloog" style={{marginLeft:"3px"}}/>
+              &lt;span id="user-name" style={{ fontWeight: "650",fontSize:"11.7px",marginLeft:"-5px" }}>
+                &lt;div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario}&lt;/div>
+              &lt;/span>
+            &lt;/div>
+            &lt;hr style={{ width: "185px", color: "#ffff" }} />
+
+            &lt;Menu
+              style={{
+                backgroundColor: "#4169E1",
+                fontWeight: "800",
+                color: "#ffff",
+              }}
+              mode="inline"
+              onClick={this.handleMenuClick}
+              defaultSelectedKeys={["2"]}
+              items={[
+                {
+                  key: "1",
+                  icon: &lt;HomeFilled />,
+                  label: " Inicio",
+                },
+                {
+                    key: "2",
+                    icon: &lt;IoNewspaperSharp />,
+                    label: " Comprobantes",
+                  },
+              ]}
+            />
+            &lt;div style={{ marginTop: "428px" }}>
+              &lt;hr
+                style={{ width: "185px", marginBottom: "15px", color: "#ffff" }}
+              />
+              &lt;Menu
+                style={{
+                  backgroundColor: "#4169E1",
+                  fontWeight: "800",
+                  color: "#ffff",
+                }}
+                mode="inline"
+                onClick={this.handleMenuClick}
+                items={[
+
+                  {
+                    key: "3",
+                    icon: &lt;RiLogoutBoxRFill />,
+                    label: " Cerrar Sesión",
+                  },
+                ]}
+              />
+            &lt;/div>
+          &lt;/Sider>
+          &lt;Layout>
+            &lt;Header
+              style={{ headerStyle, background: "#000080", color: "#ffff" }}
+            >
+              {this.state.selectedItem}
+            &lt;/Header>
+            &lt;Content style={{ contentStyle, backgroundColor: "#D4D4D4",height:"auto" }}>
+              {this.state.currentContent}
+            &lt;/Content>
+            &lt;Footer style={{ footerStyle, backgroundColor: "#000080" }}>
+              &lt;p className="copyright"> &amp;copy; 2023 CDG SOLUTIONS &lt;/p>
+            &lt;/Footer>
+          &lt;/Layout>
+        &lt;/Layout>
+      &lt;/Space>
+    );
+  }
+}
+
+/**
+ * Exporta la clase MenuComprobante para ser utilizada en otros componentes.
+ * @default
+ */
+export default withRouter(MenuComprobante);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MenuComprobante.html">MenuComprobante</a></li></ul><h3>Global</h3><ul><li><a href="global.html#contentStyle">contentStyle</a></li><li><a href="global.html#footerStyle">footerStyle</a></li><li><a href="global.html#headerStyle">headerStyle</a></li><li><a href="global.html#siderStyle">siderStyle</a></li><li><a href="global.html#usuario">usuario</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:37:42 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

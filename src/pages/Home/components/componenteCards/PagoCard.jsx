@@ -1,3 +1,17 @@
+/**
+@file componente que muestra una lista de comprobantes de pagos realizados
+@author jeniffer
+*/
+
+/**
+@module componente PagoList
+@requires react
+@requires antd
+@requires axios
+@requires componenteCards/PagoCards.css
+@requires ../../../../service/ApiRest
+@requires react-router-dom
+*/
 import React from "react";
 import "../componenteCards/PagoCards.css";
 import { Card } from "antd";
@@ -9,9 +23,20 @@ import axios from "axios";
 import { ApiUrl } from "../../../../service/ApiRest";
 import { Link } from "react-router-dom";
 import { Pagination } from 'antd';
-
+/**
+@constant usuario - Almacena el email del usuario en el localstorage
+@type {string}
+*/
 const usuario = localStorage.getItem("email");
 
+/**
+@class
+@extends React.Component
+@property {string} cliente_id - Identificador del cliente
+@property {array} tickets - Arreglo que almacena los comprobantes de pago
+@property {number} currentPage - Página actual que se muestra
+@property {number} itemsPerPage - Cantidad de items por página
+*/
 class PagoList extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +48,10 @@ class PagoList extends React.Component {
     };
   }
 
+  /**
+  @function obtenerCliente
+  @summary Función que obtiene el identificador del cliente
+  */
   obtenerCliente() {
     let url = ApiUrl + "protected/users/username/" + usuario;
     axios
@@ -42,14 +71,25 @@ class PagoList extends React.Component {
         console.log(error);
       });
   }
-
+  /**
+  @function componentDidMount
+  @summary Función que se ejecuta una vez que el componente está montado
+  */
   componentDidMount() {
     this.obtenerCliente();
   }
-
+  /**
+  Cambia la página actual en la que se muestran los comprobantes
+  @param {number} page - Número de la página actual
+  @memberof PagoList
+  */
   handleChange = (page) => {
     this.setState({ currentPage: page, itemsPerPage: 4 });
   }
+  /**
+  Renderiza el componente
+  @memberof PagoList
+  */
   render() {
 
     const { tickets, currentPage, itemsPerPage,} = this.state;
@@ -98,5 +138,8 @@ class PagoList extends React.Component {
     );
   }
 }
-
+/**
+ * Exporta la clase PagoList para ser utilizada en otros componentes.
+ * @default
+ */
 export default PagoList;

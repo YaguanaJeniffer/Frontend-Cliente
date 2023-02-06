@@ -1,3 +1,9 @@
+/**
+
+@file Venta.jsx
+@author Jeniffer
+@desc Este componente muestra la información de un itinerario seleccionado por el usuario.
+*/
 import React from "react";
 import "../components/Venta.css";
 import {imagen} from "../../../assets/images/imgAlt"
@@ -8,7 +14,16 @@ import { withRouter } from 'react-router-dom';
 //servicio
 import { ApiUrl } from "../../../service/ApiRest";
 
+/**
+@class
+@desc Componente que muestra la información de un itinerario seleccionado por el usuario.
+*/
+
 class Venta extends React.Component {
+  /*
+@constructor
+@param {Object} props Propiedades que recibe el componente.
+*/
   constructor(props) {
     super(props);
     this.state = {
@@ -16,6 +31,9 @@ class Venta extends React.Component {
     };
   }
 
+    /**
+  @desc Una vez que el componente se ha montado, hacemos una llamada a la API para obtener la información del itinerario.
+  */
   componentDidMount() {
     let url = ApiUrl + "protected/itineraries/find";
     axios
@@ -38,6 +56,14 @@ class Venta extends React.Component {
       });
   }
 
+  /**
+  @desc Función que redirige el usuario al componente de compra de ticket.
+  @param {Array} frecuencias Arreglo que contiene la información del itinerario seleccionado.
+  */
+
+  /**
+  @desc Función que redirige el usuario al componente de inicio.
+  */
   handleClick(frecuencias) {
     this.props.history.push({
       pathname: "/venta/ticket",
@@ -49,6 +75,10 @@ class Venta extends React.Component {
     this.props.history.push("/home");
   }
 
+  /**
+  Renderiza la página de inicio de sesión
+  @return {JSX.Element} Elemento JSX que representa la página de inicio de sesión
+  */
   render() {
     const { frecuencias  } = this.state;
     return (
@@ -94,4 +124,8 @@ class Venta extends React.Component {
     );
   }
 }
+/**
+ * Exporta la clase Venta para ser utilizada en otros componentes.
+ * @default
+ */
 export default withRouter(Venta);

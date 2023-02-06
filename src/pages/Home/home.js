@@ -1,3 +1,9 @@
+/**
+ * @file Home.js
+ * @author [Jeniffer]
+ * @description Componente principal para la página de inicio.
+ */
+
 import { Layout, Space, Menu } from "antd";
 import "../Home/home.css";
 import logo from "../../assets/images/cliente.png";
@@ -40,8 +46,23 @@ const footerStyle = {
   backgroundColor: "#7dbcea",
 };
 
+/**
+ * @class Home
+ * @extends React.Component
+ * @description Clase principal para el componente de página de inicio.
+ */
+
 class Home extends React.Component {
+  
+    /**
+   * @constructor
+   * @description Constructor del componente Home.
+   */
   state = {
+      /**
+       * @property {Object} selectedItem - Contiene el elemento seleccionado en el menú.
+       * @property {Object} currentContent - Contiene el contenido actual a mostrar en la página.
+       */
     selectedItem: (
       <p>
         <HomeFilled /> Inicio
@@ -49,6 +70,12 @@ class Home extends React.Component {
     ),
     currentContent: <Principal />,
   };
+
+    /**
+   * @function handleMenuClick
+   * @param {Object} e - Evento de clic en el menú.
+   * @description Manejador de evento para el clic en el menú. Actualiza el contenido actual en función del elemento seleccionado.
+   */
 
   handleMenuClick = (e) => {
     let menu = e.item.props.children[0][1].props.children;
@@ -93,6 +120,10 @@ class Home extends React.Component {
     }
   };
 
+/**
+   * Render the component
+   * @returns {JSX.Element}
+   */
   render() {
     return (
       <Space
@@ -176,4 +207,9 @@ class Home extends React.Component {
     );
   }
 }
+
+/**
+ * Exporta la clase Home para ser utilizada en otros componentes.
+ * @default
+ */
 export default Home;

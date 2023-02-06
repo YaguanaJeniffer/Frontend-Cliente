@@ -1,3 +1,7 @@
+/**
+@file Archivo que contiene la función principal de la aplicación.
+@author Jeniffer
+*/
 import React from 'react';
 import {BrowserRouter as Router , Switch , Route} from 'react-router-dom';
 import Login from './pages/Login/login.js';
@@ -8,7 +12,9 @@ import VentaTicket from './pages/Home/components/componentesCompra/VentaTicket.j
 import Ticket from './pages/Home/components/componentesCompra/ticket.jsx';
 import MenuComprobante from './pages/Home/components/MenuComprobante.js';
 
-
+  /**
+  @function Función que renderiza la aplicación y permite navegar entre diferentes páginas.
+  */
 function App() {
   return(
 

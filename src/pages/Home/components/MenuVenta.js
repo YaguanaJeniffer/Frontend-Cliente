@@ -1,3 +1,7 @@
+/**
+@file archivo que muestra la barra lateral de navegación y el contenido según la opción seleccionada en el menú.
+@author Jeniffeer
+*/
 import { Layout, Space, Menu } from "antd";
 import "../components/MenuVenta.css";
 import logo from "../../../assets/images/cliente.png";
@@ -10,9 +14,20 @@ import { Modal } from 'antd';
 import { MdPointOfSale } from "react-icons/md";
 import { IoNewspaperSharp } from "react-icons/io5";
 
-
+  /**
+  Almacena el valor del correo electrónico del usuario en localStorage
+  @type {string}
+  */
 const usuario = localStorage.getItem("email");
+/**
+Desestructuración de las propiedades de Layout de antd
+@type {{Header: Header, Footer: Footer, Sider: Sider, Content: Content}}
+*/
 const { Header, Footer, Sider, Content } = Layout;
+/**
+Estilos del header
+@type {{textAlign: string, color: string, height: number, paddingInline: number, lineHeight: string, backgroundColor: string}}
+*/
 const headerStyle = {
   textAlign: "center",
   color: "#fff",
@@ -21,6 +36,10 @@ const headerStyle = {
   lineHeight: "64px",
   backgroundColor: "#7dbcea",
 };
+/**
+Estilos del contenido
+@type {{textAlign: string, minHeight: number, lineHeight: string, color: string, backgroundColor: string}}
+*/
 const contentStyle = {
   textAlign: "center",
   minHeight: 120,
@@ -28,19 +47,38 @@ const contentStyle = {
   color: "#fff",
   backgroundColor: "#108ee9",
 };
+
+/**
+Estilos del sider
+@type {{textAlign: string, lineHeight: string, color: string, backgroundColor: string}}
+*/
 const siderStyle = {
   textAlign: "center",
   lineHeight: "120px",
   color: "#fff",
   backgroundColor: "#3ba0e9",
 };
+
+/**
+
+Estilos del footer
+@type {{textAlign: string, color: string, backgroundColor: string}}
+*/
 const footerStyle = {
   textAlign: "center",
   color: "#fff",
   backgroundColor: "#7dbcea",
 };
-
+/**
+Clase que contiene la barra lateral de navegación y el contenido según la opción seleccionada en el menú.
+*/
 class MenuVenta extends React.Component {
+  /*
+  Estado inicial del componente
+  @typedef {Object} state
+  @property {Object} selectedItem - Elemento seleccionado del menú
+  @property {Object} currentContent - Contenido actual que se mostrará
+  */
   state = {
     selectedItem: (
       <p style={{marginBottom:"5px"}}>
@@ -50,6 +88,10 @@ class MenuVenta extends React.Component {
     currentContent: <Venta location={this.props.location}/>,
   };
 
+  /**
+  Función que maneja el evento de clic en el menú
+  @param {Object} e - Evento que se desencadena al hacer clic en una opción del menú
+  */
   handleMenuClick = (e) => {
     let menu = e.item.props.children[0][1].props.children;
 
@@ -108,6 +150,15 @@ class MenuVenta extends React.Component {
     }
   };
 
+
+  /**
+  @function
+  Renderiza la estructura del menú con un sider que contiene información de usuario, un menú con opciones de inicio y comprobantes, y la opción de cerrar sesión.
+  El header muestra el elemento seleccionado en el menú.
+  El contenido muestra el contenido actual según la selección en el menú.
+  El footer muestra una leyenda de copyright.
+  @returns {JSX.Element} - Una estructura de menú con sider, header, content y footer.
+  */
   render() {
     return (
       <Space
@@ -191,4 +242,8 @@ class MenuVenta extends React.Component {
     );
   }
 }
+/**
+ * Exporta la clase MenuVenta para ser utilizada en otros componentes.
+ * @default
+ */
 export default MenuVenta;

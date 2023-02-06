@@ -1,3 +1,11 @@
+/**
+@file Ticket componente
+@author Jeniffer
+@summary Este componente muestra los asientos disponibles para la compra en un viaje en bus y permite a un usuario seleccionar y reservar asientos.
+@requires React, componenteSit/seat, antd, react-icons/bs, react-router-dom, axios, react-icons/hi2
+@requires service/ApiRest
+*/
+
 import React from "react";
 import Seats from "./componenteSit/seat";
 import "./ticket.css";
@@ -17,7 +25,19 @@ import { ApiUrl } from "../../../../service/ApiRest";
 
 const usuario = localStorage.getItem("email");
 
+/**
+@class Ticket
+@extends React.Component
+@summary Este componente muestra los asientos disponibles para la compra en un viaje en bus y permite a un usuario seleccionar y reservar asientos.
+*/
 class Ticket extends React.Component {
+  /*
+@constructor
+@param {object} props Propiedades del componente.
+@param {array} [asientos=[]] - Arreglo de asientos seleccionados para la compra.
+@param {number} [suma=0] - Total de la compra.
+@param {string} [cliente_id=""] - Identificación del cliente.
+*/
   constructor(props) {
     super(props);
     this.state = {
@@ -27,6 +47,10 @@ class Ticket extends React.Component {
     };
   }
 
+  /**
+  @function componentDidMount
+  @summary Ejecuta una petición GET para obtener el ID del cliente con base en su correo electrónico.
+  */
   componentDidMount() {
     let url = ApiUrl + "protected/users/username/"+usuario;
     axios.get(url)
@@ -37,12 +61,21 @@ class Ticket extends React.Component {
         console.log(error);
     });
   }
-
+  /**
+  @function handleSeatsSelection
+  @param {array} selected - Arreglo de asientos seleccionados para la compra.
+  @summary Actualiza el estado de los asientos seleccionados y llama la función para calcular el total.
+  */
   handleSeatsSelection = (selected) => {
     this.setState({ asientos: selected})
     this.calculateTotal(selected);
   };
-
+  /**
+  @function calculateTotal
+  @param {Array} selected - Array of selected seats
+  @returns {void}
+  Calculates the total amount to be paid for the selected seats
+  */
   calculateTotal = (selected) => {
     const frecuencias = this.props.location.state.frecuencias;
     let total = 0;
@@ -62,7 +95,11 @@ class Ticket extends React.Component {
     });
     this.setState({ suma: total });
   };
-
+  /**
+  Función para manejar el click en el botón de reservar boletos
+  @function
+  @returns {undefined} No retorna ningún valor
+  */
   handleClickReservar = () => {
     let url = ApiUrl + "protected/tickets";
     let cooperative = "";
@@ -148,7 +185,11 @@ class Ticket extends React.Component {
         }
       });
   }
-
+  /**
+  Función que maneja el evento de clic en el botón de cancelar.
+  Muestra una confirmación para asegurarse de que el usuario desea abandonar el proceso de compra.
+  Si confirma, lo redirige a la página principal.
+  */
   handleClickCancelar = () => {
 
     Modal.confirm({
@@ -161,12 +202,17 @@ class Ticket extends React.Component {
             },
           });
   }
-
+  /**
+  Función que reinicia los valores de los asientos y la suma.
+  */
   clearValues = () => {
     this.setState({ suma: 0, asientos:[] });
   };
 
-
+  /**
+  Método que permite renderizar la interfaz gráfica del componente.
+  @returns {React.Fragment} - Interfaz gráfica del componente.
+  */
   render() {
 
     const { asientos, suma  } = this.state;
@@ -212,4 +258,10 @@ class Ticket extends React.Component {
     );
   }
 }
+
+  /**
+  @exports default
+  @type {Object}
+  @description Se exporta por defecto el componente Ticket, para su uso en otros archivos.
+  */
 export default withRouter(Ticket);

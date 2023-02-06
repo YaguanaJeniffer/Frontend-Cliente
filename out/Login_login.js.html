@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Login/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Login/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+//css
+import "./login.css";
+import Title from "./components/Title/Title";
+import Label from "./components/Label/Label";
+import Footer from "./components/Footer/Footer";
+import { UserOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import { Button } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { LockOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { notification } from "antd";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+//servicio
+import { ApiUrl } from "../../service/ApiRest";
+//librerias
+import axios from "axios";
+
+/**
+ * Componente de Login.
+ * @extends React.Component
+ * @memberof module:Login
+ * @prop {Function} manejadorSubmit - Función que evita el comportamiento por defecto al hacer submit en el formulario.
+ * @prop {Function} manejadorChange - Función que maneja los cambios en los inputs del formulario.
+ * @prop {Function} manejadorBoton - Función que maneja el evento de click en el botón de inicio de sesión.
+ */
+
+class Login extends React.Component {
+
+  /**
+   * State de la clase.
+   * @property {Object} form - Objeto que almacena los valores de los inputs del formulario.
+   * @property {String} form.email - Valor del input de correo electrónico.
+   * @property {String} form.password - Valor del input de contraseña.
+   * @property {Boolean} error - Booleano que indica si ha ocurrido un error en la petición a la API.
+   * @property {String} errorMsg - Mensaje de error si ha ocurrido un error en la petición a la API.
+   * @memberof module:Login.Login
+   */
+  state = {
+    form: {
+      email: "",
+      password: "",
+    },
+    error: false,
+    errorMsg: "",
+  };
+
+/**
+   * Función que se ejecuta justo antes de montar el componente.
+   * Verifica si el usuario ya tiene un token y un correo electrónico guardados en el localStorage, y en tal caso, redirige a la página de home.
+   * @memberof module:Login.Login
+   */
+  componentDidMount() {
+    const token = localStorage.getItem("Token");
+    const username = localStorage.getItem("email");
+    if (token &amp;&amp; username) {
+      this.props.history.push("/home");
+    }
+  }
+
+  /**
+  @function manejadorSubmit
+  @param {Event} e - Evento del formulario
+  @description Función que previene el envío del formulario y su recarga
+  */
+  manejadorSubmit = (e) => {
+    e.preventDefault();
+  };
+
+  /**
+@function manejadorChange
+@param {Event} e - Evento del formulario
+@description Función que actualiza el estado de los campos del formulario
+*/
+  manejadorChange = async (e) => {
+    await this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  /**
+
+  @function manejadorBoton
+  @description Función que realiza una llamada a la API para iniciar sesión
+  y almacenar el token y el correo electrónico en el local storage.
+  */
+  manejadorBoton = () => {
+    let url = ApiUrl + "auth/signin/client";
+    axios
+      .post(url, this.state.form)
+      .then((response) => {
+        // console.log(response.data.data.token);
+        if (response.request.status === 200) {
+          localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem("email", response.data.data.username);
+          this.props.history.push("/home");
+        } else {
+          this.setState({
+            error: true,
+            errorMsg: response.data.message,
+          });
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+
+          if (error.response.status === 401 || error.response.status === 400) {
+            notification.open({
+              message: (
+                &lt;div style={{color:"red"}}>
+                  &lt;BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                  &lt;span style={{ marginLeft: '10px' }}>Credicenciales incorrectas.&lt;/span>
+                &lt;/div>
+              ),
+              duration: 10,
+              style: {
+              backgroundColor: "#fff",
+              },
+            });
+          }
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log("Error", error.message);
+        }
+      });
+  };
+
+  /**
+   * Renderiza el componente de login.
+   *
+   * @returns {JSX} El componente de login con el formulario y opciones de registro.
+   */
+  render() {
+    return (
+      &lt;React.Fragment>
+        &lt;div className="Contenedor">
+          &lt;div className="ModalPadre">&lt;/div>
+
+          &lt;div className="ModalHijo">
+            &lt;div style={{ marginTop: "131px" }}>
+              &lt;Title text="BUS-LINK ">&lt;/Title>
+            &lt;/div>
+            &lt;Label text="Por favor inicie sesión en su cuenta.">&lt;/Label>
+
+            &lt;div className="information">
+              &lt;form onSubmit={this.manejadorSubmit}>
+                &lt;div>
+                  &lt;Input
+                    className="Text"
+                    placeholder="Correo electronico"
+                    prefix={&lt;UserOutlined />}
+                    type="email"
+                    name="email"
+                    onChange={this.manejadorChange}
+                  />
+                &lt;/div>
+                &lt;div>
+                &lt;Input.Password
+                  className="Text"
+                  placeholder="Contraseña"
+                  prefix={&lt;LockOutlined />}
+                  iconRender={(visible) =>
+                    visible ? &lt;EyeTwoTone /> : &lt;EyeInvisibleOutlined />
+                  }
+                  type="password"
+                  name="password"
+                  onChange={this.manejadorChange}
+                />
+                &lt;/div>
+                &lt;Button
+                  type="submit"
+                  shape="round"
+                  size="large"
+                  style={{
+                    backgroundColor: "#1677ff",
+                    width: "250px",
+                    color: "#fff",
+                    marginTop: "23px",
+                  }}
+                  onClick={this.manejadorBoton}
+                >
+                  INGRESAR
+                &lt;/Button>
+              &lt;/form>
+              &lt;p>
+                ¿No tienes cuenta?
+                &lt;Link to="/register">Registrate aquí&lt;/Link>
+              &lt;/p>
+            &lt;/div>
+
+            &lt;Footer>&lt;/Footer>
+          &lt;/div>
+        &lt;/div>
+      &lt;/React.Fragment>
+    );
+  }
+}
+
+/**
+ * Exporta la clase Login para ser utilizada en otros componentes.
+ * @default
+ */
+export default Login;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Register.html">Register</a></li><li><a href="module-Login.Login.html">Login</a></li></ul><h3>Global</h3><ul><li><a href="global.html#manejadorBoton">manejadorBoton</a></li><li><a href="global.html#manejadorChange">manejadorChange</a></li><li><a href="global.html#manejadorSubmit">manejadorSubmit</a></li><li><a href="global.html#onFinish">onFinish</a></li><li><a href="global.html#onFinishFailed">onFinishFailed</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:33:42 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

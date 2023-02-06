@@ -17,7 +17,26 @@ import { ApiUrl } from "../../service/ApiRest";
 //librerias
 import axios from "axios";
 
+/**
+ * Componente de Login.
+ * @extends React.Component
+ * @memberof module:Login
+ * @prop {Function} manejadorSubmit - Función que evita el comportamiento por defecto al hacer submit en el formulario.
+ * @prop {Function} manejadorChange - Función que maneja los cambios en los inputs del formulario.
+ * @prop {Function} manejadorBoton - Función que maneja el evento de click en el botón de inicio de sesión.
+ */
+
 class Login extends React.Component {
+
+  /**
+   * State de la clase.
+   * @property {Object} form - Objeto que almacena los valores de los inputs del formulario.
+   * @property {String} form.email - Valor del input de correo electrónico.
+   * @property {String} form.password - Valor del input de contraseña.
+   * @property {Boolean} error - Booleano que indica si ha ocurrido un error en la petición a la API.
+   * @property {String} errorMsg - Mensaje de error si ha ocurrido un error en la petición a la API.
+   * @memberof module:Login.Login
+   */
   state = {
     form: {
       email: "",
@@ -27,7 +46,11 @@ class Login extends React.Component {
     errorMsg: "",
   };
 
-
+/**
+   * Función que se ejecuta justo antes de montar el componente.
+   * Verifica si el usuario ya tiene un token y un correo electrónico guardados en el localStorage, y en tal caso, redirige a la página de home.
+   * @memberof module:Login.Login
+   */
   componentDidMount() {
     const token = localStorage.getItem("Token");
     const username = localStorage.getItem("email");
@@ -36,10 +59,20 @@ class Login extends React.Component {
     }
   }
 
+  /**
+  @function manejadorSubmit
+  @param {Event} e - Evento del formulario
+  @description Función que previene el envío del formulario y su recarga
+  */
   manejadorSubmit = (e) => {
     e.preventDefault();
   };
 
+  /**
+@function manejadorChange
+@param {Event} e - Evento del formulario
+@description Función que actualiza el estado de los campos del formulario
+*/
   manejadorChange = async (e) => {
     await this.setState({
       form: {
@@ -49,6 +82,12 @@ class Login extends React.Component {
     });
   };
 
+  /**
+
+  @function manejadorBoton
+  @description Función que realiza una llamada a la API para iniciar sesión
+  y almacenar el token y el correo electrónico en el local storage.
+  */
   manejadorBoton = () => {
     let url = ApiUrl + "auth/signin/client";
     axios
@@ -91,6 +130,11 @@ class Login extends React.Component {
       });
   };
 
+  /**
+   * Renderiza el componente de login.
+   *
+   * @returns {JSX} El componente de login con el formulario y opciones de registro.
+   */
   render() {
     return (
       <React.Fragment>
@@ -157,4 +201,8 @@ class Login extends React.Component {
   }
 }
 
+/**
+ * Exporta la clase Login para ser utilizada en otros componentes.
+ * @default
+ */
 export default Login;

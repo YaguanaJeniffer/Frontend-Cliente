@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ticket.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ticket.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+@file Ticket componente
+@author Jeniffer
+@summary Este componente muestra los asientos disponibles para la compra en un viaje en bus y permite a un usuario seleccionar y reservar asientos.
+@requires React, componenteSit/seat, antd, react-icons/bs, react-router-dom, axios, react-icons/hi2
+@requires service/ApiRest
+*/
+
+import React from "react";
+import Seats from "./componenteSit/seat";
+import "./ticket.css";
+import { notification } from "antd";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+import { Modal } from 'antd';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { HiCheckBadge } from "react-icons/hi2";
+import { withRouter } from 'react-router-dom';
+//librerias
+import axios from 'axios'
+import { Button } from "antd";
+
+//servicio
+import { ApiUrl } from "../../../../service/ApiRest";
+
+
+const usuario = localStorage.getItem("email");
+
+/**
+@class Ticket
+@extends React.Component
+@summary Este componente muestra los asientos disponibles para la compra en un viaje en bus y permite a un usuario seleccionar y reservar asientos.
+*/
+class Ticket extends React.Component {
+  /*
+@constructor
+@param {object} props Propiedades del componente.
+@param {array} [asientos=[]] - Arreglo de asientos seleccionados para la compra.
+@param {number} [suma=0] - Total de la compra.
+@param {string} [cliente_id=""] - Identificación del cliente.
+*/
+  constructor(props) {
+    super(props);
+    this.state = {
+        asientos:[],
+        suma:0,
+        cliente_id:"",
+    };
+  }
+
+  /**
+  @function componentDidMount
+  @summary Ejecuta una petición GET para obtener el ID del cliente con base en su correo electrónico.
+  */
+  componentDidMount() {
+    let url = ApiUrl + "protected/users/username/"+usuario;
+    axios.get(url)
+      .then(response => {
+            this.setState({ cliente_id: response.data.data.id});
+      })
+      .catch(error => {
+        console.log(error);
+    });
+  }
+  /**
+  @function handleSeatsSelection
+  @param {array} selected - Arreglo de asientos seleccionados para la compra.
+  @summary Actualiza el estado de los asientos seleccionados y llama la función para calcular el total.
+  */
+  handleSeatsSelection = (selected) => {
+    this.setState({ asientos: selected})
+    this.calculateTotal(selected);
+  };
+  /**
+  @function calculateTotal
+  @param {Array} selected - Array of selected seats
+  @returns {void}
+  Calculates the total amount to be paid for the selected seats
+  */
+  calculateTotal = (selected) => {
+    const frecuencias = this.props.location.state.frecuencias;
+    let total = 0;
+    frecuencias.forEach(item => {
+      let list = item.bus.seating
+      selected.forEach(seat => {
+        if(!(selected.length === 0) ){
+        let {type} = list.find(i => i.number === seat);
+        total+=item.frequency.price
+         if(type === 'VIP'){
+         total+=item.bus.vipPrice;
+        } 
+       }else{
+        total = 0;
+       }
+      });
+    });
+    this.setState({ suma: total });
+  };
+  /**
+  Función para manejar el click en el botón de reservar boletos
+  @function
+  @returns {undefined} No retorna ningún valor
+  */
+  handleClickReservar = () => {
+    let url = ApiUrl + "protected/tickets";
+    let cooperative = "";
+    let busNumber ="";
+    let departureTime = "";
+    let origen = "";
+    let destiny = "";
+
+  const frecuencias = this.props.location.state.frecuencias;
+    frecuencias.forEach(item => {
+      cooperative = item.bus.cooperative.name
+      busNumber = item.bus.busNumber
+      departureTime = item.departureTime
+      origen = item.frequency.origen
+      destiny = item.frequency.destiny
+    })
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+      cooperative: cooperative,
+      client_id: this.state.cliente_id,
+      busNumber: busNumber,
+      price: this.state.suma,
+      departureTime: departureTime,
+      origen: origen,
+      destiny: destiny,
+      seatings: this.state.asientos
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+
+        if (data.message === "Compra exitosa") {
+          notification.open({
+            message: (
+              &lt;div  style={{color:"#389e0d"}}>
+                &lt;HiCheckBadge style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                &lt;span style={{ marginLeft: '10px' }}>Compra realizada de manera exitosa&lt;/span>
+              &lt;/div>
+            ),
+            duration: 10,
+            style: {
+            backgroundColor: "#fff",
+            },
+          });
+          this.props.history.push("/home");
+        }
+
+        if (data.message === "El o los asientos no estan disponibles") {
+          notification.open({
+            message: (
+              &lt;div style={{color:"red"}}>
+                &lt;BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                &lt;span style={{ marginLeft: '10px' }}>Es necesario reservar asientos para la compra.&lt;/span>
+              &lt;/div>
+            ),
+            duration: 10,
+            style: {
+            backgroundColor: "#fff",
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+        if (error.message === "El o los asientos no estan disponibles") {
+          notification.open({
+            message: (
+              &lt;div style={{color:"red"}}>
+                &lt;BsExclamationOctagonFill style={{fontSize:"25px",marginBottom:"-7px"}}/>
+                &lt;span style={{ marginLeft: '10px' }}>Es necesario reservar asientos para la compra.&lt;/span>
+              &lt;/div>
+            ),
+            duration: 10,
+            style: {
+            backgroundColor: "#fff",
+            },
+          });
+        }
+      });
+  }
+  /**
+  Función que maneja el evento de clic en el botón de cancelar.
+  Muestra una confirmación para asegurarse de que el usuario desea abandonar el proceso de compra.
+  Si confirma, lo redirige a la página principal.
+  */
+  handleClickCancelar = () => {
+
+    Modal.confirm({
+            title: '¿Seguro que deseaa abandonar?. Se perder la informacion.',
+            cancelText: 'Cancelar',
+            icon: &lt;ExclamationCircleFilled />,
+            okText: 'Continuar',
+            onOk: () => {
+              this.props.history.push("/home");
+            },
+          });
+  }
+  /**
+  Función que reinicia los valores de los asientos y la suma.
+  */
+  clearValues = () => {
+    this.setState({ suma: 0, asientos:[] });
+  };
+
+  /**
+  Método que permite renderizar la interfaz gráfica del componente.
+  @returns {React.Fragment} - Interfaz gráfica del componente.
+  */
+  render() {
+
+    const { asientos, suma  } = this.state;
+    const frecuencias = this.props.location.state.frecuencias;
+    
+    return (
+      &lt;div className="Contenedor2">
+        &lt;div className="Encabezado">
+          &lt;p> Boleto&lt;/p>
+        &lt;/div>   
+        {frecuencias.map(item => (
+          &lt;div style={{marginLeft:"5px",marginRight:"5px",background: "#fff"}}>
+            &lt;div>        
+              &lt;p>Informacion de su compra&lt;/p>
+            &lt;div>
+              &lt;p>Querido usuario para la compra de su boleto(s) debe tomar en cuenta que al momento de comprar un boleto, es requisito seleccionar un asiento en la parte derecha. Los asientos VIP tendrán un cargo adicional y el valor total se dará a conocer dependiendo de la cantidad de asientos elegidos. &lt;/p>
+            &lt;/div>
+            &lt;div>
+              &lt;div>
+                &lt;p>&lt;div style={{width:"10px", background:"#ff4d4f", height:"10px"}}>&lt;/div>OCUPADO&lt;/p>
+                &lt;p>&lt;div style={{width:"10px", background:"#13c2c2", height:"10px"}}>&lt;/div>VIP&lt;/p>
+                &lt;p>&lt;div style={{width:"10px", background:"#bae637", height:"10px"}}>&lt;/div>LIBRE&lt;/p>
+              &lt;/div>
+            &lt;div>
+              Cantidad de Asientos: &lt;span>{asientos.length === 0 ? 0 : asientos.length}&lt;/span>
+            &lt;/div>
+              &lt;div>
+                &lt;span>Total:&lt;/span>&lt;span>{suma.toFixed(2)}&lt;span>  $&lt;/span>&lt;/span>
+              &lt;/div>
+              &lt;div>
+              &lt;Button onClick={() => this.handleClickReservar()}>Reservar&lt;/Button>
+              &lt;Button className="Cancelar" onClick={() => this.handleClickCancelar()}>Cancelar&lt;/Button>
+              &lt;/div>
+            &lt;/div>
+            &lt;/div>
+            &lt;div key={item.id}>
+
+            &lt;Seats seating={item.bus.seating} onSelectSeats={this.handleSeatsSelection}  handleClear={this.clearValues} >&lt;/Seats>
+            &lt;/div>
+          &lt;/div>
+        ))}
+      &lt;/div>
+    );
+  }
+}
+
+  /**
+  @exports default
+  @type {Object}
+  @description Se exporta por defecto el componente Ticket, para su uso en otros archivos.
+  */
+export default withRouter(Ticket);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-default.html">default</a></li></ul><h3>Classes</h3><ul><li><a href="Ticket.html">Ticket</a></li></ul><h3>Global</h3><ul><li><a href="global.html#calculateTotal">calculateTotal</a></li><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#handleSeatsSelection">handleSeatsSelection</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:41:35 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
