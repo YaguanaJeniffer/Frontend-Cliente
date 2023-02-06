@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Comprobante.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: Comprobante.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+Componente que muestra el detalle de un comprobante de pago
+@module ComprobanteDetalle
+@requires React
+@requires antd
+@requires react-router-dom
+@requires axios
+@requires ApiRest
+@author Jeniffer
+*/
+import React from "react";
+import "../components/Venta.css";
+import { Form, Button } from "antd";
+import { withRouter } from "react-router-dom";
+import { notification } from "antd";
+import { HiCheckBadge } from "react-icons/hi2";
+import { BsExclamationOctagonFill } from "react-icons/bs";
+//librerias
+import axios from "axios";
+//servicio
+import { ApiUrl } from "../../../service/ApiRest";
+
+const imagenDefault =
+  "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-4.jpg";
+
+
+  /**
+
+Clase que representa el componente ComprobanteDetalle
+@extends React.Component
+*/
+class ComprobanteDetalle extends React.Component {
+  /*
+Crea una instancia de ComprobanteDetalle.
+@constructor
+@param {Object} props Propiedades para inicializar el componente.
+*/
+  constructor(props) {
+    super(props);
+    this.state = {
+      tickets: [],
+      previewImage: imagenDefault,
+    };
+  }
+
+  /**
+  Método que se ejecuta cuando el componente se ha montado.
+  Verifica si existe un ticket en la información del location y lo almacena en el estado.
+  */
+  componentDidMount() {
+    if (this.props.location &amp;&amp; this.props.location.state) {
+      const ticket = this.props.location.state.ticket;
+      this.setState({ tickets: ticket });
+    }
+  }
+
+  /**
+  Manejador de evento para el cambio en el input de tipo file.
+  Actualiza el estado con el archivo seleccionado y la imagen de previsualización.
+  @param {Event} event Evento de cambio en el input.
+  */
+  handleChange = (event) => {
+    this.setState({
+      file: event.target.files[0],
+    });
+    let previewImage = URL.createObjectURL(event.target.files[0]);
+    this.setState({
+      previewImage,
+    });
+  };
+
+  /**
+  Manejador de evento para el submit del formulario.
+  Envía el comprobante a la API y muestra una notificación de éxito o error.
+  @param {Event} e Evento de submit del formulario.
+  */
+  handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    const ticket = this.props.location.state.ticket;
+    formData.append("receipt", this.state.file);
+    formData.append("id", ticket.id);
+
+    let url = ApiUrl + "protected/tickets";
+    axios
+      .put(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        notification.open({
+          message: (
+            &lt;div style={{ color: "#389e0d" }}>
+              &lt;HiCheckBadge
+                style={{ fontSize: "25px", marginBottom: "-7px" }}
+              />
+              &lt;span style={{ marginLeft: "10px" }}>
+                Se ah envido de manera exitosa el comprobante. En espera a que
+                sea verificado su recibo{" "}
+              &lt;/span>
+            &lt;/div>
+          ),
+          duration: 10,
+          style: {
+            backgroundColor: "#fff",
+          },
+        });
+        this.props.history.push("/home");
+      })
+      .catch((error) => {
+        notification.open({
+          message: (
+            &lt;div style={{ color: "red" }}>
+              &lt;BsExclamationOctagonFill
+                style={{ fontSize: "25px", marginBottom: "-7px" }}
+              />
+              &lt;span style={{ marginLeft: "10px" }}>
+                Error al subir el comprobante
+              &lt;/span>
+            &lt;/div>
+          ),
+          duration: 10,
+          style: {
+            backgroundColor: "#fff",
+          },
+        });
+      });
+  };
+
+  /**
+  Renderiza la información de compra del usuario.
+  @returns {JSX} JSX que representa la información de compra.
+  */
+  render() {
+    const { tickets } = this.state;
+    const { previewImage } = this.state;
+
+    return (
+      &lt;div className="Contenedor5">
+        &lt;div>
+          &lt;p>INFORMACIÓN DE COMPRA&lt;/p>
+        &lt;/div>
+
+        {tickets.length === 0 ? (
+          &lt;div className="Loading">&lt;/div>
+        ) : (
+          &lt;div>
+            {tickets.qr ? (
+              &lt;div>
+                &lt;img src={`data:image/jpeg;base64,${tickets.qr}`} alt="Comprobante" />
+              &lt;/div>
+            ) : (
+              &lt;div style={{ display: "flex", flexDirection: "column" }}>
+                &lt;div>
+                  &lt;p>
+                    Por favor, querido usuario subir el comprobante de pago. Una
+                    vez verificado su pago se generara su código.
+                  &lt;/p>
+                &lt;/div>
+
+                &lt;div>
+                  &lt;form onSubmit={this.handleSubmit}>
+                    {previewImage &amp;&amp; (
+                      &lt;img
+                        src={previewImage}
+                        alt="Preview"
+                        style={{
+                          maxHeight: "140px",
+                          maxWidth: "150px",
+                          height: "140px",
+                          width: "150px",
+                        }}
+                      />
+                    )}
+                    &lt;Form.Item label="Seleccionar imagen">
+                      &lt;input
+                        type="file"
+                        onChange={this.handleChange}
+                        name="receipt"
+                      />
+                    &lt;/Form.Item>
+                    &lt;Button type="primary" htmlType="submit">
+                      Enviar
+                    &lt;/Button>
+                  &lt;/form>
+                &lt;/div>
+              &lt;/div>
+            )}
+            &lt;div>
+              &lt;p
+                style={{
+                  fontWeight: "bold",
+                  fontSize: "20px",
+                  marginBottom: "5px",
+                  color: "#000080",
+                  textAlign: "center",
+                  marginTop: "12px",
+                }}
+              >
+                {tickets.cooperative}
+              &lt;/p>
+              &lt;div>
+                &lt;div>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Fecha de compra:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>
+                      {tickets.createdAt}
+                    &lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      N° de Bus:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>
+                      {tickets.busNumber}
+                    &lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Origen:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>{tickets.origen}&lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Destino:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>
+                      {tickets.destiny}
+                    &lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Hora de salida:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>
+                      {tickets.departureTime}
+                    &lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Precio Total:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>{tickets.price}&lt;/span>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Asiento(s):
+                    &lt;/span>
+                    &lt;p style={{ marginLeft: "5px", margin: "2px" }}>
+                      {" "}
+                      {tickets.seatings.length === 0 ? (
+                        &lt;span>No hay asientos.&lt;/span>
+                      ) : (
+                        tickets.seatings.map((stop) => (
+                          &lt;p style={{ margin: "2px" }}>
+                            {stop.number} &lt;span>{stop.type} &lt;/span>{" "}
+                          &lt;/p>
+                        ))
+                      )}{" "}
+                    &lt;/p>
+                  &lt;/p>
+                  &lt;p style={{ textAlign: "left", margin: "1px" }}>
+                    &lt;span style={{ fontWeight: "bold", color: "#000080" }}>
+                      Estado:
+                    &lt;/span>
+                    &lt;span style={{ marginLeft: "10px" }}>{tickets.status}&lt;/span>
+                  &lt;/p>
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          &lt;/div>
+        )}
+      &lt;/div>
+    );
+  }
+}
+export default withRouter(ComprobanteDetalle);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-ComprobanteDetalle.html">ComprobanteDetalle</a></li></ul><h3>Classes</h3><ul><li><a href="module-ComprobanteDetalle-ComprobanteDetalle.html">ComprobanteDetalle</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:38:51 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

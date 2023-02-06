@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: MenuVenta.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: MenuVenta.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+@file archivo que muestra la barra lateral de navegación y el contenido según la opción seleccionada en el menú.
+@author Jeniffeer
+*/
+import { Layout, Space, Menu } from "antd";
+import "../components/MenuVenta.css";
+import logo from "../../../assets/images/cliente.png";
+import { RiLogoutBoxRFill } from "react-icons/ri";
+import { HomeFilled } from "@ant-design/icons";
+import React from "react";
+import Venta from "./Venta";
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import { Modal } from 'antd';
+import { MdPointOfSale } from "react-icons/md";
+import { IoNewspaperSharp } from "react-icons/io5";
+
+  /**
+  Almacena el valor del correo electrónico del usuario en localStorage
+  @type {string}
+  */
+const usuario = localStorage.getItem("email");
+/**
+Desestructuración de las propiedades de Layout de antd
+@type {{Header: Header, Footer: Footer, Sider: Sider, Content: Content}}
+*/
+const { Header, Footer, Sider, Content } = Layout;
+/**
+Estilos del header
+@type {{textAlign: string, color: string, height: number, paddingInline: number, lineHeight: string, backgroundColor: string}}
+*/
+const headerStyle = {
+  textAlign: "center",
+  color: "#fff",
+  height: 64,
+  paddingInline: 50,
+  lineHeight: "64px",
+  backgroundColor: "#7dbcea",
+};
+/**
+Estilos del contenido
+@type {{textAlign: string, minHeight: number, lineHeight: string, color: string, backgroundColor: string}}
+*/
+const contentStyle = {
+  textAlign: "center",
+  minHeight: 120,
+  lineHeight: "120px",
+  color: "#fff",
+  backgroundColor: "#108ee9",
+};
+
+/**
+Estilos del sider
+@type {{textAlign: string, lineHeight: string, color: string, backgroundColor: string}}
+*/
+const siderStyle = {
+  textAlign: "center",
+  lineHeight: "120px",
+  color: "#fff",
+  backgroundColor: "#3ba0e9",
+};
+
+/**
+
+Estilos del footer
+@type {{textAlign: string, color: string, backgroundColor: string}}
+*/
+const footerStyle = {
+  textAlign: "center",
+  color: "#fff",
+  backgroundColor: "#7dbcea",
+};
+/**
+Clase que contiene la barra lateral de navegación y el contenido según la opción seleccionada en el menú.
+*/
+class MenuVenta extends React.Component {
+  /*
+  Estado inicial del componente
+  @typedef {Object} state
+  @property {Object} selectedItem - Elemento seleccionado del menú
+  @property {Object} currentContent - Contenido actual que se mostrará
+  */
+  state = {
+    selectedItem: (
+      &lt;p style={{marginBottom:"5px"}}>
+        &lt;MdPointOfSale style={{fontSize:"26px"}}/> Venta de Boleto
+      &lt;/p>
+    ),
+    currentContent: &lt;Venta location={this.props.location}/>,
+  };
+
+  /**
+  Función que maneja el evento de clic en el menú
+  @param {Object} e - Evento que se desencadena al hacer clic en una opción del menú
+  */
+  handleMenuClick = (e) => {
+    let menu = e.item.props.children[0][1].props.children;
+
+    switch (menu) {
+      case " Inicio":
+        Modal.confirm({
+          title: '¿Seguro que deseas ir al Inicio?. El proceso de la compra se anulara.',
+          cancelText: 'Cancelar',
+          icon: &lt;ExclamationCircleFilled />,
+          okText: 'Continuar',
+          
+          onOk: () => {
+        this.setState({
+          selectedItem: e.item.props.children,
+          currentContent: this.props.history.push("/home")
+        })}
+      });
+        break;
+
+        case " Comprobantes":
+          Modal.confirm({
+            title: '¿Seguro que deseas ir a la seccion Comprobantes?. El proceso de la compra se anulara.',
+            cancelText: 'Cancelar',
+            icon: &lt;ExclamationCircleFilled />,
+            okText: 'Continuar',
+            
+            onOk: () => {
+          this.setState({
+            selectedItem: e.item.props.children,
+            currentContent: this.props.history.push("/comprobante")
+          })}
+        });
+          break;
+
+        case " Cerrar Sesión":
+          Modal.confirm({
+            title: '¿Seguro que deseas cerrar sesión?. El proceso de la compra se anulara.',
+            cancelText: 'Cancelar',
+            icon: &lt;ExclamationCircleFilled />,
+            okText: 'Continuar',
+            
+            onOk: () => {
+              this.setState({ selectedItem: e.item.props.children });
+              localStorage.removeItem("token");
+              localStorage.removeItem("correo electrónico");
+              this.props.history.push("/");
+            },
+          });
+          break;
+
+      default:
+        this.setState({
+          selectedItem: e.item.props.children,
+          currentContent: &lt;Venta location={this.props.location}/>,
+        });
+    }
+  };
+
+
+  /**
+  @function
+  Renderiza la estructura del menú con un sider que contiene información de usuario, un menú con opciones de inicio y comprobantes, y la opción de cerrar sesión.
+  El header muestra el elemento seleccionado en el menú.
+  El contenido muestra el contenido actual según la selección en el menú.
+  El footer muestra una leyenda de copyright.
+  @returns {JSX.Element} - Una estructura de menú con sider, header, content y footer.
+  */
+  render() {
+    return (
+      &lt;Space
+        direction="vertical"
+        style={{
+          width: "100%",
+        }}
+        size={[0, 48]}
+      >
+        &lt;Layout>
+          &lt;Sider
+            style={{ siderStyle, backgroundColor: "#000080", height: "100vh" }}
+          >
+            &lt;div id="user-info">
+              &lt;img src={logo} id="user-image" alt="sinloog" style={{marginLeft:"3px"}}/>
+              &lt;span id="user-name" style={{ fontWeight: "650",fontSize:"11.7px",marginLeft:"-5px" }}>
+                &lt;div style={{width:"127px", overflow: "hidden", textWrap: "wrap"}}>{usuario}&lt;/div>
+              &lt;/span>
+            &lt;/div>
+            &lt;hr style={{ width: "185px", color: "#ffff" }} />
+
+            &lt;Menu
+              style={{
+                backgroundColor: "#4169E1",
+                fontWeight: "800",
+                color: "#ffff",
+              }}
+              mode="inline"
+              onClick={this.handleMenuClick}
+              defaultSelectedKeys={["1"]}
+              items={[
+                {
+                  key: "1",
+                  icon: &lt;HomeFilled />,
+                  label: " Inicio",
+                },
+                {
+                  key: "2",
+                  icon: &lt;IoNewspaperSharp />,
+                  label: " Comprobantes",
+                },
+              ]}
+            />
+            &lt;div style={{ marginTop: "428px" }}>
+              &lt;hr
+                style={{ width: "185px", marginBottom: "15px", color: "#ffff" }}
+              />
+              &lt;Menu
+                style={{
+                  backgroundColor: "#4169E1",
+                  fontWeight: "800",
+                  color: "#ffff",
+                }}
+                mode="inline"
+                onClick={this.handleMenuClick}
+                items={[
+                  {
+                    key: "3",
+                    icon: &lt;RiLogoutBoxRFill />,
+                    label: " Cerrar Sesión",
+                  },
+                ]}
+              />
+            &lt;/div>
+          &lt;/Sider>
+          &lt;Layout>
+            &lt;Header
+              style={{ headerStyle, background: "#000080", color: "#ffff" }}
+            >
+              {this.state.selectedItem}
+            &lt;/Header>
+            &lt;Content style={{ contentStyle, backgroundColor: "#D4D4D4" }}>
+              {this.state.currentContent}
+            &lt;/Content>
+            &lt;Footer style={{ footerStyle, backgroundColor: "#000080" }}>
+              &lt;p className="copyright"> &amp;copy; 2023 CDG SOLUTIONS &lt;/p>
+            &lt;/Footer>
+          &lt;/Layout>
+        &lt;/Layout>
+      &lt;/Space>
+    );
+  }
+}
+/**
+ * Exporta la clase MenuVenta para ser utilizada en otros componentes.
+ * @default
+ */
+export default MenuVenta;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="MenuVenta.html">MenuVenta</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Renderizalaestructuradelmen%25C3%25BAconunsiderquecontieneinformaci%25C3%25B3ndeusuario,unmen%25C3%25BAconopcionesdeinicioycomprobantes,ylaopci%25C3%25B3ndecerrarsesi%25C3%25B3n.Elheadermuestraelelementoseleccionadoenelmen%25C3%25BA.Elcontenidomuestraelcontenidoactualseg%25C3%25BAnlaselecci%25C3%25B3nenelmen%25C3%25BA.Elfootermuestraunaleyendadecopyright.">Renderiza la estructura del menú con un sider que contiene información de usuario, un menú con opciones de inicio y comprobantes, y la opción de cerrar sesión.
+  El header muestra el elemento seleccionado en el menú.
+  El contenido muestra el contenido actual según la selección en el menú.
+  El footer muestra una leyenda de copyright.</a></li><li><a href="global.html#contentStyle">contentStyle</a></li><li><a href="global.html#footerStyle">footerStyle</a></li><li><a href="global.html#headerStyle">headerStyle</a></li><li><a href="global.html#siderStyle">siderStyle</a></li><li><a href="global.html#usuario">usuario</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:37:31 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

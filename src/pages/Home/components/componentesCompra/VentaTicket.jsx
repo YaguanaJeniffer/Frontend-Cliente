@@ -1,5 +1,11 @@
-import { Layout, Space, Menu } from "antd";
+/**
 
+@file VentaTicket.js - componente que muestra la página de venta de boletos
+@author Jeniffer
+@module VentaTicket
+@extends React.Component
+*/
+import { Layout, Space, Menu } from "antd";
 import "../../components/MenuVenta.css";
 import logo from "../../../../assets/images/cliente.png";
 import { HomeFilled } from "@ant-design/icons";
@@ -11,9 +17,17 @@ import { MdPointOfSale } from "react-icons/md";
 import Ticket from "./ticket";
 import { IoNewspaperSharp } from "react-icons/io5";
 
-
+/**
+@constant usuario - obtiene el correo electrónico del usuario almacenado en el localStorage
+@type {string}
+*/
 const usuario = localStorage.getItem("email");
 const { Header, Footer, Sider, Content } = Layout;
+
+/**
+@constant headerStyle - objeto de estilos para el header del componente
+@type {Object}
+*/
 const headerStyle = {
   textAlign: "center",
   color: "#fff",
@@ -22,6 +36,11 @@ const headerStyle = {
   lineHeight: "64px",
   backgroundColor: "#7dbcea",
 };
+
+/**
+@constant contentStyle - objeto de estilos para el contenido del componente
+@type {Object}
+*/
 const contentStyle = {
   textAlign: "center",
   minHeight: 120,
@@ -29,19 +48,38 @@ const contentStyle = {
   color: "#fff",
   backgroundColor: "#108ee9",
 };
+
+/**
+@constant siderStyle - objeto de estilos para el sider del componente
+@type {Object}
+*/
 const siderStyle = {
   textAlign: "center",
   lineHeight: "120px",
   color: "#fff",
   backgroundColor: "#3ba0e9",
 };
+
+/**
+@constant footerStyle - objeto de estilos para el footer del componente
+@type {Object}
+*/
 const footerStyle = {
   textAlign: "center",
   color: "#fff",
   backgroundColor: "#7dbcea",
 };
 
+/**
+@class VentaTicket - componente de clase que muestra la página de venta de boletos
+@extends React.Component
+*/
 class VentaTicket extends React.Component {
+  /*
+@property {Object} state - contiene los valores iniciales para el componente
+@property {Object} state.selectedItem - componente seleccionado en el menú
+@property {Object} state.currentContent - componente actual mostrado en la pantalla
+*/
   state = {
     selectedItem: (
       <p style={{marginBottom:"5px"}}>
@@ -51,6 +89,12 @@ class VentaTicket extends React.Component {
     currentContent: <Ticket location={this.props.location} history={this.props.history}/>,
   };
 
+  /**
+  Funcion que controla las acciones de los diferentes menus de la aplicacion
+  @function
+  @param {Object} e - Evento generado por el componente menu.
+  @returns {void}
+  */
   handleMenuClick = (e) => {
     let menu = e.item.props.children[0][1].props.children;
 
@@ -109,6 +153,11 @@ class VentaTicket extends React.Component {
     }
   };
 
+  /**
+  Funcion que renderiza los componentes de la aplicacion.
+  @function
+  @returns {JSX.Element} El componente a renderizar.
+  */
   render() {
 
     return (
@@ -194,4 +243,9 @@ class VentaTicket extends React.Component {
     );
   }
 }
+/**
+
+Modulo de exportación de la clase VentaTicket
+@module VentaTicket
+*/
 export default VentaTicket;

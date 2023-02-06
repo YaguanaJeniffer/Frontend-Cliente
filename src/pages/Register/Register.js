@@ -1,3 +1,9 @@
+/**
+@file Register.js
+@author Jeniffer
+@desc [Archivo para registarse]
+@return {React.Fragment} Devuelve un componente React.Fragment que contiene un formulario de registro.
+*/
 import React from "react";
 //css
 import "./Register.css";
@@ -8,20 +14,45 @@ import { BsExclamationOctagonFill } from "react-icons/bs";
 import { HiCheckBadge } from "react-icons/hi2";
 import { Link } from "react-router-dom";
 import { FaHouseUser } from 'react-icons/fa';
-
 //servicio
 import { ApiUrl } from "../../service/ApiRest";
 //librerias
 import axios from "axios";
 
+/**
+
+Función que muestra un mensaje de éxito en la consola.
+@param {object} values - Valores recibidos.
+@returns {void}
+*/
 const onFinish = (values) => {
   console.log("Success:", values);
 };
+
+/**
+Función que muestra un mensaje de error en la consola.
+@param {object} errorInfo - Información sobre el error.
+@returns {void}
+*/
 const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
+/**
+
+Clase que representa el componente de registro de usuario.
+@class
+@extends React.Component
+*/
+
 class Register extends React.Component {
+/*
+Estado inicial del componente.
+@type {object}
+@property {object} form - Datos del formulario.
+@property {boolean} error - Indicador de error.
+@property {string} errorMsg - Mensaje de error.
+*/
   state = {
     form: {
       ci: "",
@@ -35,10 +66,20 @@ class Register extends React.Component {
     errorMsg: "",
   };
 
+  /**
+  Manejador de evento de submit.
+  @param {object} e - Evento.
+  @returns {void}
+  */
   manejadorSubmit = (e) => {
     e.preventDefault();
   };
 
+  /**
+  Manejador de evento de cambio de input.
+  @param {object} e - Evento.
+  @returns {void}
+  */
   manejadorChange = async (e) => {
     await this.setState({
       form: {
@@ -48,6 +89,10 @@ class Register extends React.Component {
     });
   };
 
+  /**
+  Manejador de evento de clic en botón.
+  @returns {void}
+  */
   manejadorBoton = () => {
     console.log("enviado");
     let url = ApiUrl + "auth/singup/client";
@@ -121,6 +166,10 @@ class Register extends React.Component {
       });
   };
 
+  /**
+  @desc [Función que renderiza el componente. Muestra un formulario de registro en una ventana modal.]
+  @return {React.Fragment} Devuelve un componente React.Fragment que contiene un formulario de registro.
+  */
   render() {
     return (
       <React.Fragment>
@@ -291,5 +340,8 @@ class Register extends React.Component {
     );
   }
 }
-
+/**
+ * Exporta la clase Register para ser utilizada en otros componentes.
+ * @default
+ */
 export default Register;

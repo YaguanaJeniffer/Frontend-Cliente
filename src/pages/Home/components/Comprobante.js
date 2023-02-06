@@ -1,3 +1,13 @@
+/**
+Componente que muestra el detalle de un comprobante de pago
+@module ComprobanteDetalle
+@requires React
+@requires antd
+@requires react-router-dom
+@requires axios
+@requires ApiRest
+@author Jeniffer
+*/
 import React from "react";
 import "../components/Venta.css";
 import { Form, Button } from "antd";
@@ -13,7 +23,18 @@ import { ApiUrl } from "../../../service/ApiRest";
 const imagenDefault =
   "https://icon-library.com/images/no-picture-available-icon/no-picture-available-icon-4.jpg";
 
+
+  /**
+
+Clase que representa el componente ComprobanteDetalle
+@extends React.Component
+*/
 class ComprobanteDetalle extends React.Component {
+  /*
+Crea una instancia de ComprobanteDetalle.
+@constructor
+@param {Object} props Propiedades para inicializar el componente.
+*/
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +43,10 @@ class ComprobanteDetalle extends React.Component {
     };
   }
 
+  /**
+  Método que se ejecuta cuando el componente se ha montado.
+  Verifica si existe un ticket en la información del location y lo almacena en el estado.
+  */
   componentDidMount() {
     if (this.props.location && this.props.location.state) {
       const ticket = this.props.location.state.ticket;
@@ -29,6 +54,11 @@ class ComprobanteDetalle extends React.Component {
     }
   }
 
+  /**
+  Manejador de evento para el cambio en el input de tipo file.
+  Actualiza el estado con el archivo seleccionado y la imagen de previsualización.
+  @param {Event} event Evento de cambio en el input.
+  */
   handleChange = (event) => {
     this.setState({
       file: event.target.files[0],
@@ -39,6 +69,11 @@ class ComprobanteDetalle extends React.Component {
     });
   };
 
+  /**
+  Manejador de evento para el submit del formulario.
+  Envía el comprobante a la API y muestra una notificación de éxito o error.
+  @param {Event} e Evento de submit del formulario.
+  */
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -94,6 +129,10 @@ class ComprobanteDetalle extends React.Component {
       });
   };
 
+  /**
+  Renderiza la información de compra del usuario.
+  @returns {JSX} JSX que representa la información de compra.
+  */
   render() {
     const { tickets } = this.state;
     const { previewImage } = this.state;

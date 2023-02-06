@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: FrecuenciasList.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: FrecuenciasList.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { Card } from 'antd'
+import "../componenteCards/FrecuenciasList.css";
+import { Pagination } from 'antd';
+import { Link } from 'react-router-dom'
+import { notification } from "antd";
+import { MdBusAlert } from "react-icons/md";
+import {imagen} from "../../../../assets/images/imgAlt"
+import { FaBusAlt } from "react-icons/fa";
+import { Input, Button } from "antd";
+//librerias
+import axios from 'axios'
+//servicio
+import { ApiUrl } from "../../../../service/ApiRest";
+
+  /**
+  Clase que renderiza los elementos visuales de las frecuencias
+  @class
+  */
+class CardList extends React.Component {
+  /*
+  Constructor de la clase
+  @constructor
+  @param {Object} props - Propiedades iniciales del componente.
+  */
+    constructor(props) {
+        super(props);
+    /*
+    State de la clase
+    @type {Object}
+    @property {Array} frecuencias - Arreglo con las frecuencias.
+    @property {Number} currentPage - Número de página actual.
+    @property {Number} itemsPerPage - Número de elementos por página.
+    @property {String} origen - Ubicación de origen de la frecuencia.
+    @property {String} destiny - Ubicación de destino de la frecuencia.
+    */
+        this.state = {
+            frecuencias: [],
+            currentPage: 1,
+            itemsPerPage: 4,
+            origen: '',
+            destiny: ''
+        };
+    }
+
+  /**
+  Método que se ejecuta después de que el componente ha sido montado.
+  Obtiene los datos de las frecuencias a partir de una llamada a la API.
+  @function
+  */
+    componentDidMount() {
+        let url = ApiUrl + "protected/itineraries/find";
+        axios.post(url)
+          .then(response => {
+            if(Array.isArray(response.data.data)){
+                this.setState({ frecuencias: response.data.data});
+                
+            } else {
+                console.log(response.data.data);
+                console.error("No hay frecuencias disponibles");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+        });
+      }
+  /**
+  Método que maneja el cambio de página
+  @function
+  @param {Number} page - Número de página a la que se desea cambiar.
+  */
+    handleChange = (page) => {
+      this.setState({ currentPage: page, itemsPerPage: 4 });
+    }
+  /**
+  * Método que maneja la búsqueda de frecuencias
+  * @function
+  */
+    handleSearch = () => {
+      let { origen, destiny, frecuencias } = this.state;
+
+      if(origen===""&amp;&amp; destiny===""){
+        let url = ApiUrl + "protected/itineraries/find";
+        axios.post(url)
+          .then(response => {
+            if(Array.isArray(response.data.data)){
+                this.setState({ frecuencias: response.data.data});
+                
+            } else {
+                console.log(response.data.data);
+                console.error("No hay frecuencias disponibles");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+        });
+
+      }else if(!(origen ==="")&amp;&amp;(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            &lt;div style={{color:"#fa541c"}}>
+              &lt;MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              &lt;span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.&lt;/span>
+            &lt;/div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
+      }
+
+      }else if((origen ==="")&amp;&amp;!(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.destiny === destiny);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            &lt;div style={{color:"#fa541c"}}>
+              &lt;MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              &lt;span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.&lt;/span>
+            &lt;/div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
+      }
+
+      }else if(!(origen ==="")&amp;&amp;!(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen &amp;&amp; frecuencia.frequency.destiny === destiny);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            &lt;div style={{color:"#fa541c"}}>
+              &lt;MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              &lt;span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.&lt;/span>
+            &lt;/div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
+      }
+      }
+    }
+  /**
+  Función encargada de renderizar la vista de la aplicación
+  @function
+  @returns {JSX} Regresa el componente de la vista
+  */
+    render() {
+
+    // Destructuración del estado de la clase
+    const { frecuencias, currentPage, itemsPerPage, origen, destiny} = this.state;
+    // Cálculo del índice del último elemento
+    const indexOfLastItem = currentPage * itemsPerPage;
+    // Cálculo del índice del primer elemento
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    // Selección de los elementos actuales
+    const currentItems = frecuencias.slice(indexOfFirstItem, indexOfLastItem);
+    
+    // Regresa el componente de la vista
+        return (
+            
+        &lt;div style={{marginTop:"18px",background:"#fff"}}>
+        &lt;div>
+        &lt;FaBusAlt>&lt;/FaBusAlt>
+        
+            &lt;Input
+              placeholder="Ingrese el origen"
+              type="text"
+              value={origen}
+              onChange={(e) => {
+                const re = /^[a-zA-Z\s]+$/;
+                if (e.target.value === '' || re.test(e.target.value)) {
+                  this.setState({
+                    origen: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase()
+                  });
+                }
+              }}
+            />
+            &lt;Input
+              placeholder="Ingrese el destino"
+              type="text"
+              value={destiny}
+              onChange={(e) => {
+                const re = /^[a-zA-Z\s]+$/;
+                if (e.target.value === '' || re.test(e.target.value)) {
+                  this.setState({
+                    destiny: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase()
+                  });
+                }
+              }}
+            />
+            &lt;Button
+              type="primary"
+              onClick={this.handleSearch}
+              style={{
+                borderRadius: "20px",
+                marginLeft: "5px",
+                width: "150px",
+              }}
+            >
+              Buscar
+            &lt;/Button>
+        &lt;/div>
+        &lt;div style={{ textAlign: "center", margin: "5px",flexWrap:"wrap",marginTop:"15px" }}>
+            
+        {currentItems.map(item =>
+        &lt;Link to={{
+          pathname: "/venta",
+          state: { id: item.id }
+        }}>
+              &lt;Card
+              cover={
+                &lt;img alt="Cooperativa" src={ item.bus.cooperative.image ? `data:image/jpeg;base64,${item.bus.cooperative.image}` : `data:image/jpeg;base64,${imagen}` } style={{height:"115px"}}/>
+              }
+              style={{ width: 217, background: "4169E1" }}
+              >
+              &lt;div>
+                &lt;p style={{fontWeight:"bold",fontSize:"15px",marginBottom:"5px"}}>{item.bus.cooperative.name}&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Origen:&lt;/span>&lt;span style={{marginLeft:'10px'}}>{item.frequency.origen}&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Destino:&lt;/span>&lt;span style={{marginLeft:'5px'}}>{item.frequency.destiny}&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Tipo:&lt;/span>&lt;span style={{marginLeft:'24px'}}>{item.frequency.type}&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Precio:&lt;/span>&lt;span style={{marginLeft:'14px'}}>{item.frequency.price}&lt;/span>&lt;span>$&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Tiempo:&lt;/span>&lt;span style={{marginLeft:'6px'}}>{item.frequency.hours}&lt;/span>&lt;span style={{marginRight:"2px"}}>h&lt;/span>&lt;span>{item.frequency.minutes}&lt;/span>&lt;span style={{marginLeft:"1px"}}>min&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Hora de Salida:&lt;/span>&lt;span style={{marginLeft:'5px'}}>{item.departureTime}&lt;/span>&lt;/p>
+                &lt;p style={{textAlign:"left"}}>&lt;span style={{fontWeight:"bold"}}>Paradas:&lt;/span>&lt;span style={{marginLeft:'4px'}}> {item.frequency.stops.length === 0 ? &lt;span style={{fontSize:"10.5px"}}>No hay paradas.&lt;/span> : item.frequency.stops.map(stop => (&lt;span style={{fontSize:"10.5px"}}>{stop} &lt;/span>))}  &lt;/span>&lt;/p>
+              &lt;/div>
+             
+            &lt;/Card>
+          &lt;/Link>
+            )}
+
+          &lt;/div>
+        &lt;div style={{textAlign: "center"}}>
+          &lt;Pagination defaultCurrent={1} total={frecuencias.length} showSizeChanger onChange={this.handleChange} onShowSizeChange={this.handleChange} pageSize={4}/>
+        &lt;/div>
+          &lt;/div>
+        )
+    }
+}
+/**
+ * Exporta la clase CardList para ser utilizada en otros componentes.
+ * @default
+ */
+export default CardList;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CardList.html">CardList</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Mon Feb 06 2023 14:39:18 GMT-0500 (hora de Ecuador)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

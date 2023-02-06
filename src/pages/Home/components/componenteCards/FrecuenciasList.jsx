@@ -13,11 +13,27 @@ import axios from 'axios'
 //servicio
 import { ApiUrl } from "../../../../service/ApiRest";
 
-
+  /**
+  Clase que renderiza los elementos visuales de las frecuencias
+  @class
+  */
 class CardList extends React.Component {
-
+  /*
+  Constructor de la clase
+  @constructor
+  @param {Object} props - Propiedades iniciales del componente.
+  */
     constructor(props) {
         super(props);
+    /*
+    State de la clase
+    @type {Object}
+    @property {Array} frecuencias - Arreglo con las frecuencias.
+    @property {Number} currentPage - Número de página actual.
+    @property {Number} itemsPerPage - Número de elementos por página.
+    @property {String} origen - Ubicación de origen de la frecuencia.
+    @property {String} destiny - Ubicación de destino de la frecuencia.
+    */
         this.state = {
             frecuencias: [],
             currentPage: 1,
@@ -27,8 +43,11 @@ class CardList extends React.Component {
         };
     }
 
-
-
+  /**
+  Método que se ejecuta después de que el componente ha sido montado.
+  Obtiene los datos de las frecuencias a partir de una llamada a la API.
+  @function
+  */
     componentDidMount() {
         let url = ApiUrl + "protected/itineraries/find";
         axios.post(url)
@@ -45,98 +64,112 @@ class CardList extends React.Component {
             console.log(error);
         });
       }
+  /**
+  Método que maneja el cambio de página
+  @function
+  @param {Number} page - Número de página a la que se desea cambiar.
+  */
+    handleChange = (page) => {
+      this.setState({ currentPage: page, itemsPerPage: 4 });
+    }
+  /**
+  * Método que maneja la búsqueda de frecuencias
+  * @function
+  */
+    handleSearch = () => {
+      let { origen, destiny, frecuencias } = this.state;
 
-      handleChange = (page) => {
-        this.setState({ currentPage: page, itemsPerPage: 4 });
+      if(origen===""&& destiny===""){
+        let url = ApiUrl + "protected/itineraries/find";
+        axios.post(url)
+          .then(response => {
+            if(Array.isArray(response.data.data)){
+                this.setState({ frecuencias: response.data.data});
+                
+            } else {
+                console.log(response.data.data);
+                console.error("No hay frecuencias disponibles");
+            }
+          })
+          .catch(error => {
+            console.log(error);
+        });
+
+      }else if(!(origen ==="")&&(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            <div style={{color:"#fa541c"}}>
+              <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
+            </div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
       }
 
-      handleSearch = () => {
-        let { origen, destiny, frecuencias } = this.state;
-
-        if(origen===""&& destiny===""){
-          let url = ApiUrl + "protected/itineraries/find";
-          axios.post(url)
-            .then(response => {
-              if(Array.isArray(response.data.data)){
-                  this.setState({ frecuencias: response.data.data});
-                  
-              } else {
-                  console.log(response.data.data);
-                  console.error("No hay frecuencias disponibles");
-              }
-            })
-            .catch(error => {
-              console.log(error);
-          });
-
-        }else if(!(origen ==="")&&(destiny==="")){
-        let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen);
-        this.setState({ frecuencias: filteredFrequencies });
-        if(frecuencias.length===0){
-          notification.open({
-            message: (
-              <div style={{color:"#fa541c"}}>
-                <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
-                <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
-              </div>
-            ),
-            duration: 20,
-            style: {
-            backgroundColor: "#fff",
-            },
-          });
-          this.componentDidMount();
-        }
-
-        }else if((origen ==="")&&!(destiny==="")){
-        let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.destiny === destiny);
-        this.setState({ frecuencias: filteredFrequencies });
-        if(frecuencias.length===0){
-          notification.open({
-            message: (
-              <div style={{color:"#fa541c"}}>
-                <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
-                <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
-              </div>
-            ),
-            duration: 20,
-            style: {
-            backgroundColor: "#fff",
-            },
-          });
-          this.componentDidMount();
-        }
-
-        }else if(!(origen ==="")&&!(destiny==="")){
-        let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen && frecuencia.frequency.destiny === destiny);
-        this.setState({ frecuencias: filteredFrequencies });
-        if(frecuencias.length===0){
-          notification.open({
-            message: (
-              <div style={{color:"#fa541c"}}>
-                <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
-                <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
-              </div>
-            ),
-            duration: 20,
-            style: {
-            backgroundColor: "#fff",
-            },
-          });
-          this.componentDidMount();
-        }
-        }
+      }else if((origen ==="")&&!(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.destiny === destiny);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            <div style={{color:"#fa541c"}}>
+              <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
+            </div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
       }
 
+      }else if(!(origen ==="")&&!(destiny==="")){
+      let filteredFrequencies = frecuencias.filter(frecuencia => frecuencia.frequency.origen === origen && frecuencia.frequency.destiny === destiny);
+      this.setState({ frecuencias: filteredFrequencies });
+      if(frecuencias.length===0){
+        notification.open({
+          message: (
+            <div style={{color:"#fa541c"}}>
+              <MdBusAlert style={{fontSize:"25px",marginBottom:"-7px"}}/>
+              <span style={{ marginLeft: '10px' }}>No hay viajes disponibles con lo buscado.</span>
+            </div>
+          ),
+          duration: 20,
+          style: {
+          backgroundColor: "#fff",
+          },
+        });
+        this.componentDidMount();
+      }
+      }
+    }
+  /**
+  Función encargada de renderizar la vista de la aplicación
+  @function
+  @returns {JSX} Regresa el componente de la vista
+  */
     render() {
 
-    
+    // Destructuración del estado de la clase
     const { frecuencias, currentPage, itemsPerPage, origen, destiny} = this.state;
+    // Cálculo del índice del último elemento
     const indexOfLastItem = currentPage * itemsPerPage;
+    // Cálculo del índice del primer elemento
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    // Selección de los elementos actuales
     const currentItems = frecuencias.slice(indexOfFirstItem, indexOfLastItem);
     
-    
+    // Regresa el componente de la vista
         return (
             
         <div style={{marginTop:"18px",background:"#fff"}}>
@@ -217,5 +250,8 @@ class CardList extends React.Component {
         )
     }
 }
-
+/**
+ * Exporta la clase CardList para ser utilizada en otros componentes.
+ * @default
+ */
 export default CardList;
